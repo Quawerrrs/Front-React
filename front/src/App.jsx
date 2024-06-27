@@ -11,7 +11,7 @@ function App() {
   };
 
   return (
-    <div className=" bg-purple-800 p-8 rounded-2xl">
+    <div className=" bg-blue-800 p-8 rounded-2xl shadow-xl">
       <div className="form-container">
         <h1>{isLogin ? 'Connexion' : 'Inscription'}</h1>
         {isLogin ? <Login /> : <Register />}

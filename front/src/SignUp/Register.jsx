@@ -10,7 +10,7 @@ function Register() {
     password: '',
     confirmPassword: '',
     siren: '',
-    address: '',
+    adresse: '',
     firstName: '',
     lastName: ''
   });
@@ -51,23 +51,21 @@ function Register() {
     };
 
     try {
-      const response = await fetch('', {
+      const response = await fetch('localhost:5000/api/ajoutuser', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(dataToSave)
+      }).then((response)=> response.json()).then(data => {
+        if (data.sucess){
+          alert("ouiiiii")
+        } else if (data.password) {
+          alert('mdp non conforme')
+        } else if (data.email) {
+          alert('dupli email')
+        }
       });
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log('Success:', result);
-        alert('Inscription réussie !');
-      } else {
-        const error = await response.json();
-        console.error('Error:', error);
-        alert('Une erreur est survenue, veuillez réessayer.');
-      }
     } catch (error) {
       console.error('Error:', error);
       alert('Une erreur est survenue, veuillez réessayer.');
@@ -133,8 +131,8 @@ function Register() {
             <label>Adresse du siège :</label>
             <input
               type="text"
-              name="address"
-              value={formData.address}
+              name="adresse"
+              value={formData.adresse}
               onChange={handleInputChange}
               required
             />
@@ -144,7 +142,7 @@ function Register() {
       {userType === 'videaste' && (
         <>
           <div className="form-group">
-            <label>Nom :</label>
+            <label>Prénom :</label>
             <input
               type="text"
               name="firstName"
@@ -154,7 +152,7 @@ function Register() {
             />
           </div>
           <div className="form-group">
-            <label>Prénom :</label>
+            <label>Nom :</label>
             <input
               type="text"
               name="lastName"
