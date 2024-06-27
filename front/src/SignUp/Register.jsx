@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import '../App.css';
 
 function Register() {
   const [userType, setUserType] = useState('entreprise');
@@ -9,43 +8,43 @@ function Register() {
   };
 
   return (
-    <form className="form fade-in">
-      <div className="form-group">
+    <form className="">
+      <div className="">
         <label>{userType === 'entreprise' ? 'Nom' : 'Pseudo'} :</label>
         <input type="text" placeholder={userType === 'entreprise' ? 'Nom' : 'Pseudo'} required />
       </div>
-      <div className="form-group">
+      <div className="">
         <label>Email :</label>
         <input type="email" required />
       </div>
-      <div className="form-group">
+      <div className="">
         <label>Mot de passe :</label>
         <input type="password" required />
       </div>
-      <div className="form-group">
+      <div className="">
         <label>Confirmez le mot de passe :</label>
         <input type="password" required />
       </div>
       {userType === 'entreprise' && (
-        <div className="form-group">
+        <div className="">
           <label>N° SIREN :</label>
           <input type="text" required />
         </div>
       )}
       {userType === 'videaste' && (
-        <div className="form-group">
+        <div className="">
           <label>Lien vers la chaîne :</label>
           <input type="url" required />
         </div>
       )}
-      <div className="form-group">
+      <div className="">
         <label>Type de compte :</label>
         <select value={userType} onChange={handleUserTypeChange} required>
           <option value="entreprise">Entreprise</option>
           <option value="videaste">Vidéaste</option>
         </select>
       </div>
-      <button type="submit" className="submit-btn">S'inscrire</button>
+      <button type="submit" className="">S'inscrire</button>
     </form>
   );
 }
