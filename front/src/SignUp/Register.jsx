@@ -1,4 +1,3 @@
-import { get } from 'mongoose';
 import React, { useState } from 'react';
 
 
@@ -26,7 +25,7 @@ function Register() {
       ...formData,
       name: '',
       siren: '',
-      address: '',
+      adresse: '',
       firstName: '',
       lastName: ''
     });
@@ -46,19 +45,19 @@ function Register() {
       name: formData.name,
       email: formData.email,
       password: formData.password,
-      ...(userType === 'entreprise' && { siren: formData.siren, address: formData.address }),
+      ...(userType === 'entreprise' && { siren: formData.siren, adresse: formData.adresse }),
       ...(userType === 'videaste' && { firstName: formData.firstName, lastName: formData.lastName })
     };
 
     try {
-      const response = await fetch('localhost:5000/api/ajoutuser', {
+      const response = await fetch('http://localhost:5000/api/ajoutuser', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(dataToSave)
       }).then((response)=> response.json()).then(data => {
-        if (data.sucess){
+        if (data.success){
           alert("ouiiiii")
         } else if (data.password) {
           alert('mdp non conforme')
@@ -85,7 +84,7 @@ function Register() {
           required
         />
       </div>
-      <div className="form-group">
+      <div className="">
         <label>Email :</label>
         <input
           type="email"
@@ -95,7 +94,7 @@ function Register() {
           required
         />
       </div>
-      <div className="form-group">
+      <div className="">
         <label>Mot de passe :</label>
         <input
           type="password"
@@ -105,7 +104,7 @@ function Register() {
           required
         />
       </div>
-      <div className="form-group">
+      <div className="">
         <label>Confirmez le mot de passe :</label>
         <input
           type="password"
@@ -163,14 +162,14 @@ function Register() {
           </div>
         </>
       )}
-      <div className="form-group">
+      <div className="">
         <label>Type de compte :</label>
         <select value={userType} onChange={handleUserTypeChange} required>
           <option value="entreprise">Entreprise</option>
           <option value="videaste">Vidéaste</option>
         </select>
       </div>
-      <button type="submit" className="submit-btn">S'inscrire</button>
+      <button type="submit" className="">S'inscrire</button>
     </form>
   );
 }
