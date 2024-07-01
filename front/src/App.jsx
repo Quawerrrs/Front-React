@@ -1,24 +1,21 @@
-import React, { useState } from 'react';
-import Login from './SignUp/Login';
-import Register from './SignUp/Register';
+import React, { useState } from "react";
+import { Route, Routes } from "react-router-dom";
+import Entreprise from "./Entreprise/Entreprise.jsx";
+import Createur from "./Createur/Createur.jsx";
+import Admin from "./Admin/Admin.jsx";
+import Accueil from "./Accueil.jsx";
 
 function App() {
-  const [isLogin, setIsLogin] = useState(true);
-
-  const toggleForm = () => {
-    setIsLogin(!isLogin);
-  };
 
   return (
-    <div className=" bg-blue-800 p-8 rounded-2xl shadow-xl">
-      <div className="form-container">
-        <h1>{isLogin ? 'Connexion' : 'Inscription'}</h1>
-        {isLogin ? <Login /> : <Register />}
-        <button onClick={toggleForm} className="">
-          {isLogin ? 'Pas encore inscrit ? Inscrivez-vous' : 'Déjà inscrit ? Connectez-vous'}
-        </button>
-      </div>
-    </div>
+    <>
+      <Routes>
+        <Route path="/" element={<Accueil />} />
+        <Route path="/entrerpise" element={<Entreprise />} />
+        <Route path="/createur" element={<Createur />} />
+        <Route path="/admin" element={<Admin />} />
+      </Routes>
+    </>
   );
 }
 
