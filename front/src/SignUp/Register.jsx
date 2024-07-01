@@ -1,4 +1,3 @@
-import { get } from 'mongoose';
 import React, { useState } from 'react';
 
 
@@ -26,7 +25,7 @@ function Register() {
       ...formData,
       name: '',
       siren: '',
-      address: '',
+      adresse: '',
       firstName: '',
       lastName: ''
     });
@@ -46,19 +45,19 @@ function Register() {
       name: formData.name,
       email: formData.email,
       password: formData.password,
-      ...(userType === 'entreprise' && { siren: formData.siren, address: formData.address }),
+      ...(userType === 'entreprise' && { siren: formData.siren, adresse: formData.adresse }),
       ...(userType === 'videaste' && { firstName: formData.firstName, lastName: formData.lastName })
     };
 
     try {
-      const response = await fetch('localhost:5000/api/ajoutuser', {
+      const response = await fetch('http://localhost:5000/api/ajoutuser', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(dataToSave)
       }).then((response)=> response.json()).then(data => {
-        if (data.sucess){
+        if (data.success){
           alert("ouiiiii")
         } else if (data.password) {
           alert('mdp non conforme')
