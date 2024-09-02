@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-
 function Register() {
   const [userType, setUserType] = useState('entreprise');
   const [formData, setFormData] = useState({
@@ -34,7 +33,6 @@ function Register() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Perform form validation here
     if (formData.password !== formData.confirmPassword) {
       alert('Les mots de passe ne correspondent pas');
       return;
@@ -56,13 +54,13 @@ function Register() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(dataToSave)
-      }).then((response)=> response.json()).then(data => {
-        if (data.success){
-          alert("ouiiiii")
+      }).then(response => response.json()).then(data => {
+        if (data.success) {
+          alert("Inscription réussie");
         } else if (data.password) {
-          alert('mdp non conforme')
+          alert('Mot de passe non conforme');
         } else if (data.email) {
-          alert('dupli email')
+          alert('Email déjà utilisé');
         }
       });
     } catch (error) {
@@ -72,9 +70,11 @@ function Register() {
   };
 
   return (
-    <form className="form fade-in" onSubmit={handleSubmit}>
-      <div className="form-group">
-        <label>{userType === 'entreprise' ? 'Nom de l\'entreprise' : 'Pseudo'} :</label>
+    <form className="max-w-xs mx-auto mt-4 bg-white p-3 rounded-lg shadow-md md:max-w-md" onSubmit={handleSubmit}>
+      <div className="mb-2">
+        <label className="block text-gray-700 font-semibold mb-1">
+          {userType === 'entreprise' ? 'Nom de l\'entreprise' : 'Pseudo'} :
+        </label>
         <input
           type="text"
           name="name"
@@ -82,94 +82,112 @@ function Register() {
           onChange={handleInputChange}
           placeholder={userType === 'entreprise' ? 'Nom de l\'entreprise' : 'Pseudo'}
           required
+          className="w-full px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
         />
       </div>
-      <div className="">
-        <label>Email :</label>
+      <div className="mb-2">
+        <label className="block text-gray-700 font-semibold mb-1">Email :</label>
         <input
           type="email"
           name="email"
           value={formData.email}
           onChange={handleInputChange}
           required
+          className="w-full px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
         />
       </div>
-      <div className="">
-        <label>Mot de passe :</label>
+      <div className="mb-2">
+        <label className="block text-gray-700 font-semibold mb-1">Mot de passe :</label>
         <input
           type="password"
           name="password"
           value={formData.password}
           onChange={handleInputChange}
           required
+          className="w-full px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
         />
       </div>
-      <div className="">
-        <label>Confirmez le mot de passe :</label>
+      <div className="mb-2">
+        <label className="block text-gray-700 font-semibold mb-1">Confirmez le mot de passe :</label>
         <input
           type="password"
           name="confirmPassword"
           value={formData.confirmPassword}
           onChange={handleInputChange}
           required
+          className="w-full px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
         />
       </div>
       {userType === 'entreprise' && (
         <>
-          <div className="form-group">
-            <label>N° SIREN :</label>
+          <div className="mb-2">
+            <label className="block text-gray-700 font-semibold mb-1">N° SIREN :</label>
             <input
               type="number"
               name="siren"
               value={formData.siren}
               onChange={handleInputChange}
               required
+              className="w-full px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
             />
           </div>
-          <div className="form-group">
-            <label>Adresse du siège :</label>
+          <div className="mb-2">
+            <label className="block text-gray-700 font-semibold mb-1">Adresse du siège :</label>
             <input
               type="text"
               name="adresse"
               value={formData.adresse}
               onChange={handleInputChange}
               required
+              className="w-full px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
             />
           </div>
         </>
       )}
       {userType === 'videaste' && (
         <>
-          <div className="form-group">
-            <label>Prénom :</label>
+          <div className="mb-2">
+            <label className="block text-gray-700 font-semibold mb-1">Prénom :</label>
             <input
               type="text"
               name="firstName"
               value={formData.firstName}
               onChange={handleInputChange}
               required
+              className="w-full px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
             />
           </div>
-          <div className="form-group">
-            <label>Nom :</label>
+          <div className="mb-2">
+            <label className="block text-gray-700 font-semibold mb-1">Nom :</label>
             <input
               type="text"
               name="lastName"
               value={formData.lastName}
               onChange={handleInputChange}
               required
+              className="w-full px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
             />
           </div>
         </>
       )}
-      <div className="">
-        <label>Type de compte :</label>
-        <select value={userType} onChange={handleUserTypeChange} required>
+      <div className="mb-2">
+        <label className="block text-gray-700 font-semibold mb-1">Type de compte :</label>
+        <select
+          value={userType}
+          onChange={handleUserTypeChange}
+          required
+          className="w-full px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+        >
           <option value="entreprise">Entreprise</option>
           <option value="videaste">Vidéaste</option>
         </select>
       </div>
-      <button type="submit" className="">S'inscrire</button>
+      <button
+        type="submit"
+        className="w-full bg-red-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 text-sm"
+      >
+        S'inscrire
+      </button>
     </form>
   );
 }
