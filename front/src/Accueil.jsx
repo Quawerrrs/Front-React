@@ -10,7 +10,7 @@ export default function Accueil() {
   };
   return (
     <>
-      <div className=" bg-blue-800 p-8 rounded-2xl shadow-xl">
+      <div className=" bg-blue-800 p-8 rounded-2xl shadow-xlb text-center">
         <div className="form-container">
           <h1>{isLogin ? "Connexion" : "Inscription"}</h1>
           {isLogin ? <Login /> : <Register />}
