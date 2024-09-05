@@ -1,7 +1,9 @@
-export default function  Entreprise(){
+import React from "react";
+function  Entreprise(){
     return (
         <div>
-            C'est ici les entreprises
+            test
         </div>
     );
 }
+export default Entreprise
