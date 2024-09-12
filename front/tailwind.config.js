@@ -1,19 +1,24 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: 'class', // Permet d'activer le mode sombre avec une classe
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}", // Chemins des fichiers à scanner pour les classes Tailwind
-  ],
+  darkMode: "class",
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+
   theme: {
     extend: {
-      // Personnalisation des thèmes, couleurs, typographies, etc.
+      keyframes: {
+        fadeInFromTop: {
+          "0%": { opacity: 0, transform: "translateY(-20px)" },
+          "100%": { opacity: 1, transform: "translateY(0)" },
+        },
+      },
+      animation: {
+        // Durée de 2.5 secondes pour l'animation
+        fadeInFromTop: "fadeInFromTop 1.2s ease-out",
+      },
     },
   },
-  plugins: [
-    // Liste des plugins Tailwind que tu souhaites utiliser
-  ],
+  plugins: [],
   corePlugins: {
-    preflight: false, // Désactiver les styles de base de Tailwind
+    preflight: false,
   },
-}
+};
