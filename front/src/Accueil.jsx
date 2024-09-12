@@ -10,16 +10,11 @@ export default function Accueil() {
   };
   return (
     <>
-      <div className=" bg-blue-800 p-8 rounded-2xl shadow-xlb text-center">
-        <div className="form-container">
+      <div>
+        <div>
           
-          <h1>{isLogin ? "Connexion" : "Inscription"}</h1>
+          <h1>{isLogin ? "" : ""}</h1>
           {isLogin ? <Login /> : <Register />}
-          <button onClick={toggleForm} className="">
-            {isLogin
-              ? "Pas encore inscrit ? Inscrivez-vous"
-              : "Déjà inscrit ? Connectez-vous"}
-          </button>
         </div>
       </div>
     </>

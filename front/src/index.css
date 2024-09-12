@@ -1,3 +1,5 @@
+/* styles/global.css */
+@import 'C:/Users/Mathias Prono/Desktop/React/Streamio/Front-React/front/src/reset.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
