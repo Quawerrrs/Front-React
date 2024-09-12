@@ -1,17 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+
 function Login() {
   const navigate = useNavigate();
-  // const [formData, setFormData] = React.useState({
-  //   email: "",
-  //   password: "",
-  // });
-
-  // const handleInputChange = (event) => {
-  //   const { name, value } = event.target;
-  //   setFormData({ ...formData, [name]: value });
-  // };
+  const [isVisible, setIsVisible] = useState(false);
 
   const {
     register,
@@ -48,25 +41,36 @@ function Login() {
     }
   };
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 100); // Attendre 100ms avant de lancer l'animation
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div
-      className="relative min-h-screen bg-cover bg-center"
+      className="relative min-h-screen flex items-center justify-center bg-cover bg-center"
       style={{
         backgroundImage:
           'url("https://francis-gagnon.com/wp-content/uploads/2019/09/2017-09-27_FGagnon_91245-1080x607.jpg")',
       }}
     >
-      <div className="absolute inset-0 bg-black opacity-60 backdrop-blur-sm"></div>
-      <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
+      {/* Flou important sur l'image de fond */}
+      <div className="absolute inset-0 bg-black opacity-60 backdrop-blur-3xl"></div>
+      <div className="relative z-10 flex items-center justify-center w-full p-4">
         <form
-          className="max-w-sm w-full bg-white bg-opacity-40 backdrop-blur-md p-6 rounded-lg shadow-lg"
+          className={`max-w-sm w-full bg-white bg-opacity-70 backdrop-blur-md p-6 rounded-lg shadow-lg transition-transform duration-1000 ${
+            isVisible ? "animate-fadeInFromTop" : "opacity-0"
+          }`}
           onSubmit={handleSubmit(onSubmit)}
         >
-          <h2 className="text-xl font-bold text-white mb-4 text-center shadow-md">
+          <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">
             Connexion
           </h2>
 
-          <label className="block text-white font-semibold mb-4 ">
+          <label className="block text-gray-800 font-semibold mb-4">
             Email :
             <input
               {...register("email", {
@@ -85,7 +89,7 @@ function Login() {
           {errors.email && (
             <p className="text-red-500">{errors.email.message}</p>
           )}
-          <label className="block text-white font-semibold mb-2">
+          <label className="block text-gray-800 font-semibold mb-2">
             Mot de passe :
             <input
               {...register("password", {
@@ -111,9 +115,9 @@ function Login() {
           >
             Se connecter
           </button>
-          <p className="text-center text-white">
+          <p className="text-center text-gray-800">
             Pas encore inscrit ?{" "}
-            <a href="/Register" className="text-blue-400 hover:underline">
+            <a href="/Register" className="text-blue-600 hover:underline">
               Créez un compte
             </a>
           </p>
