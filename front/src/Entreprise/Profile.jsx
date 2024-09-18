@@ -1,41 +1,40 @@
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 
-export default function Profil() {
-  const [profileData, setProfileData] = useState(null);
-
-  useEffect(() => {
-    fetch("http://localhost:5000/api/session/getProfile", {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setProfileData(data);
-      })
-      .catch((error) => console.error("Error fetching profile data:", error));
-  }, []);
-
-  if (!profileData) {
-    return <p>Chargement des données du profil...</p>;
-  }
+export default function Profile() {
+  // Simuler un email utilisateur stocké en local
+  const [userEmail, setUserEmail] = useState("utilisateur@example.com");
+  const [userName, setUserName] = useState("Sport Quantum");
+  const [userSiren, setUserSiren] = useState("1512960541845");
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-md w-1/3">
-        <h1 className="text-2xl font-bold mb-4">Profil</h1>
-        <p>
-          <strong>Nom:</strong> {profileData.name}
+      <div className="bg-white p-6 rounded-lg shadow-lg">
+        <h2 className="text-xl font-bold mb-4">Profil utilisateur</h2>
+
+        {/* Affichage de l'email */}
+        <p className="mb-4 text-gray-700">
+          Nom Entreprise : <span className="font-semibold">{userName}</span>
         </p>
-        <p>
-          <strong>Email:</strong> {profileData.email}
+        <p className="mb-4 text-gray-700">
+          N° Siren : <span className="font-semibold">{userSiren}</span>
         </p>
-        <p>
-          <strong>Entreprise:</strong> {profileData.company}
+        <p className="mb-4 text-gray-700">
+          Email : <span className="font-semibold">{userEmail}</span>
         </p>
-        <p>
-          <strong>Date de création:</strong> {profileData.creationDate}
-        </p>
-        {/* Ajoutez ici d'autres informations du profil */}
+
+        {/* Bouton */}
+        <button
+          onClick={() => alert("Bouton cliqué !")}
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+        >
+          Modifier le profil
+        </button>
+        <a
+          href="/entreprises"
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+        >
+          Retour
+        </a>
       </div>
     </div>
   );
