@@ -6,12 +6,14 @@ import Admin from "./Admin/Admin.jsx";
 import Accueil from "./Accueil.jsx";
 import Register from "./SignUp/Register.jsx";
 import Login from "./SignUp/Login.jsx";
+import Profile from "./Entreprise/Profile.jsx";
 
 function App() {
   return (
     <>
       <Routes>
         <Route path="/" element={<Accueil />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/entreprises" element={<Entreprise />} />
