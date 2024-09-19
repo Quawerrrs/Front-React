@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
   const [userType, setUserType] = useState("entreprise");
@@ -12,6 +13,24 @@ function Register() {
     firstName: "",
     lastName: "",
   });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/session/getSession", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((token) => {
+        if (token.siren !== undefined) {
+          navigate("/entreprises");
+        } else if (token.pseudo !== undefined) {
+          navigate("/createur");
+        } else if (token.code !== undefined) {
+          navigate("/admin");
+        }
+      });
+  }, []);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
