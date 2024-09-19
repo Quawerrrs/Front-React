@@ -47,58 +47,77 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-      <div className="relative bg-white p-6 rounded-lg shadow-lg">
-        <h2 className="text-xl font-bold mb-4">Profil utilisateur</h2>
+    <>
+      <nav className="bg-gray-800 p-4 flex justify-between items-center">
+        <div className="text-orange-500 text-xl font-bold">Streamio</div>
+        <div className="space-x-4">
+          <a
+            href="/"
+            className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 no-underline"
+          >
+            Accueil
+          </a>
+          <a
+            href="/Profile"
+            className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 no-underline"
+          >
+            Profil
+          </a>
+        </div>
+      </nav>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+        <div className="relative bg-white p-6 rounded-lg shadow-lg">
+          <h2 className="text-xl font-bold mb-4">Profil utilisateur</h2>
 
-        {/* Affichage conditionnel basé sur le type d'utilisateur */}
-        {user.role === "entreprise" ? (
-          <>
-            <p className="mb-4 text-gray-700">
-              Nom Entreprise :{" "}
-              <span className="font-semibold">{user.name}</span>
-            </p>
-            <p className="mb-4 text-gray-700">
-              N° Siren : <span className="font-semibold">{user.siren}</span>
-            </p>
-          </>
-        ) : user.role === "createur" ? (
-          <>
-            <p className="mb-4 text-gray-700">
-              Pseudo : <span className="font-semibold">{user.pseudo}</span>
-            </p>
-          </>
-        ) : (
-          <p className="text-gray-700">Type de compte inconnu.</p>
-        )}
+          {/* Affichage conditionnel basé sur le type d'utilisateur */}
+          {user.role === "entreprise" ? (
+            <>
+              <p className="mb-4 text-gray-700">
+                Nom Entreprise :{" "}
+                <span className="font-semibold">{user.name}</span>
+              </p>
+              <p className="mb-4 text-gray-700">
+                N° Siren : <span className="font-semibold">{user.siren}</span>
+              </p>
+            </>
+          ) : user.role === "createur" ? (
+            <>
+              <p className="mb-4 text-gray-700">
+                Pseudo : <span className="font-semibold">{user.pseudo}</span>
+              </p>
+            </>
+          ) : (
+            <p className="text-gray-700">Type de compte inconnu.</p>
+          )}
 
-        <p className="mb-4 text-gray-700">
-          Email : <span className="font-semibold">{user.email}</span>
-        </p>
+          <p className="mb-4 text-gray-700">
+            Email : <span className="font-semibold">{user.email}</span>
+          </p>
 
-        {/* Message temporaire affiché au-dessus du contenu */}
-        {tempMessage && (
-          <div className="absolute top-0 left-0 w-full bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-b-md shadow-md z-50">
-            <span>{tempMessage}</span>
-          </div>
-        )}
+          {/* Message temporaire affiché au-dessus du contenu */}
+          {tempMessage && (
+            <div className="absolute top-0 left-0 w-full bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-b-md shadow-md z-50">
+              <span>{tempMessage}</span>
+            </div>
+          )}
 
-        {/* Bouton de modification */}
-        <button
-          onClick={handleEditClick}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 mt-8"
-        >
-          Modifier le profil
-        </button>
+          {/* Bouton de modification */}
+          <button
+            onClick={handleEditClick}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 mt-8"
+          >
+            Modifier le profil
+          </button>
 
-        {/* Lien de retour */}
-        <a
-          href="/entreprises"
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 mt-4"
-        >
-          Retour
-        </a>
+          {/* Lien de retour */}
+          <a
+            href="/entreprises"
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 mt-4"
+          >
+            Retour
+          </a>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
