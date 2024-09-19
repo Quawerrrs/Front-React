@@ -134,7 +134,7 @@ export default function Entreprise() {
               <li
                 key={conversation.id}
                 onClick={() => handleSelectConversation(conversation)}
-                className={`p-4 cursor-pointer rounded-lg ${
+                className={`p-4 mb-4 cursor-pointer rounded-lg ${
                   selectedConversation &&
                   selectedConversation.id === conversation.id
                     ? "bg-blue-600"
@@ -268,59 +268,38 @@ export default function Entreprise() {
                   onChange={handleSubCategoryChange}
                   className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-800"
                 >
-                  <option value="">Sélectionner un ordre</option>
-                  <option value="ascending">Ordre croissant</option>
-                  <option value="descending">Ordre décroissant</option>
+                  <option value="">Sélectionner</option>
+                  <option value="asc">Croissant</option>
+                  <option value="desc">Décroissant</option>
                 </select>
               </div>
             )}
 
-            {sortCategory === "subscribers" && (
-              <div className="flex items-center">
-                <label
-                  htmlFor="subscribers"
-                  className="mr-2 text-gray-700 font-medium"
-                >
-                  Abonnés :
-                </label>
-                <select
-                  id="subscribers"
-                  value={subCategory}
-                  onChange={handleSubCategoryChange}
-                  className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-800"
-                >
-                  <option value="">Sélectionner un seuil</option>
-                  <option value="10000">Plus de 10 000</option>
-                  <option value="50000">Plus de 50 000</option>
-                  <option value="100000">Plus de 100 000</option>
-                  <option value="500000">Plus de 500 000</option>
-                  <option value="1000000">Plus de 1 000 000</option>
-                </select>
-              </div>
-            )}
-
-            {sortCategory === "theme" && (
-              <div className="flex items-center">
-                <label
-                  htmlFor="theme"
-                  className="mr-2 text-gray-700 font-medium"
-                >
-                  Thème :
-                </label>
-                <select
-                  id="theme"
-                  value={subCategory}
-                  onChange={handleSubCategoryChange}
-                  className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-800"
-                >
-                  <option value="">Sélectionner un thème</option>
-                  <option value="technology">Technologie</option>
-                  <option value="education">Éducation</option>
-                  <option value="entertainment">Divertissement</option>
-                </select>
-              </div>
-            )}
+            {/* Ajouter d'autres options selon les catégories */}
           </div>
+
+          {/* Liste des chaînes */}
+          <ul className="mt-8">
+            {chaines.map((chaine) => (
+              <li
+                key={chaine.id}
+                className="mb-4 p-4 bg-white rounded-lg shadow-md"
+              >
+                <h3 className="text-lg font-bold text-gray-800">
+                  {chaine.name}
+                </h3>
+                <p className="text-gray-600">{chaine.description}</p>
+              </li>
+            ))}
+          </ul>
+
+          {/* Bouton de chargement pour plus de chaînes */}
+          <button
+            onClick={getMoreChannels}
+            className="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-700"
+          >
+            Charger plus
+          </button>
         </div>
       </div>
     </>
