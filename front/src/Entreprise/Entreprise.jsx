@@ -101,7 +101,6 @@ export default function Entreprise() {
     setSelectedConversation(conversation);
   };
   if (validEntreprise) {
-
     return (
       <>
         <nav className="bg-gray-800 p-4 flex justify-between items-center">
@@ -125,10 +124,13 @@ export default function Entreprise() {
         <div className="flex min-h-screen">
           {/* La box sur la gauche qui prend 1/3 de la largeur */}
           <div
-            className={`bg-blue-800 text-white p-4 w-1/3 flex flex-col ${selectedConversation ? "hidden" : ""
-              }`}
+            className={`bg-blue-800 text-white p-4 w-1/3 flex flex-col ${
+              selectedConversation ? "hidden" : ""
+            }`}
           >
-            <h2 className="text-xl font-bold text-center mb-4">Conversations</h2>
+            <h2 className="text-xl font-bold text-center mb-4">
+              Conversations
+            </h2>
 
             {/* Liste des conversations */}
             <ul className="flex-grow overflow-y-auto mb-4">
@@ -136,11 +138,12 @@ export default function Entreprise() {
                 <li
                   key={conversation.id}
                   onClick={() => handleSelectConversation(conversation)}
-                  className={`p-4 mb-4 cursor-pointer rounded-lg ${selectedConversation &&
-                      selectedConversation.id === conversation.id
+                  className={`p-4 mb-4 cursor-pointer rounded-lg ${
+                    selectedConversation &&
+                    selectedConversation.id === conversation.id
                       ? "bg-blue-600"
                       : "bg-blue-500"
-                    }`}
+                  }`}
                 >
                   {conversation.name}
                 </li>
@@ -180,8 +183,9 @@ export default function Entreprise() {
                 {selectedConversation.messages.map((message, index) => (
                   <div
                     key={index}
-                    className={`mb-2 p-2 rounded-lg ${message.sender === "user" ? "bg-blue-500" : "bg-gray-300"
-                      }`}
+                    className={`mb-2 p-2 rounded-lg ${
+                      message.sender === "user" ? "bg-blue-500" : "bg-gray-300"
+                    }`}
                   >
                     {message.sender === "user" ? "Vous: " : "Bot: "}{" "}
                     {message.text}
@@ -302,6 +306,10 @@ export default function Entreprise() {
             </button>
           </div>
         </div>
+        {/* Footer */}
+        <footer className="bg-gray-800 p-4 text-white text-center">
+          © 2024 Streamio. Tous droits réservés.
+        </footer>
       </>
     );
   } else {
