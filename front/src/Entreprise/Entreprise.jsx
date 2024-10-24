@@ -38,7 +38,7 @@ export default function Entreprise() {
     })
       .then((response) => response.json())
       .then((token) => {
-        if (token.siren !== undefined) {
+        if (token.siret !== undefined) {
           setValidEntreprise(true);
         } else {
           setValidEntreprise(false);

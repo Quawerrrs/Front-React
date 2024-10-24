@@ -20,7 +20,7 @@ function Login() {
     })
       .then((response) => response.json())
       .then((token) => {
-        if (token.siren !== undefined) {
+        if (token.siret !== undefined) {
           navigate("/entreprises");
         } else if (token.pseudo !== undefined) {
           navigate("/createur");

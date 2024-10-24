@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Register() {
@@ -84,10 +84,13 @@ function Register() {
         .then((data) => {
           if (data.success) {
             alert("Inscription réussie");
+            navigate("/login");
           } else if (data.password) {
             alert("Mot de passe non conforme");
           } else if (data.email) {
             alert("Email déjà utilisé");
+          } else if (data.pseudo) {
+            alert("pseudo déjà utilisé");
           }
         });
     } catch (error) {
@@ -177,11 +180,11 @@ function Register() {
               <>
                 <div className="mb-4">
                   <label className="block text-white font-semibold mb-2">
-                    N° SIREN :
+                    N° SIRET :
                   </label>
                   <input
                     type="number"
-                    name="siren"
+                    name="siret"
                     value={formData.siren}
                     onChange={handleInputChange}
                     required
