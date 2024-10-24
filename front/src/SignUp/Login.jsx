@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import "tailwindcss/tailwind.css"; // Assure-toi que Tailwind est bien importé
 
 function Login() {
   const navigate = useNavigate();

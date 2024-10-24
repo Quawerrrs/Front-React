@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios"; // Importation de la biblioth que axios pour faire des requ tes HTTP vers l'API
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 export default function Profile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [tempMessage, setTempMessage] = useState(""); // État pour le message temporaire
   const [formData, setFormData] = useState({
-    uti_id : "",
+    uti_id: "",
     name: "",
     email: "",
     siret: "",
@@ -63,7 +64,7 @@ export default function Profile() {
       response.json().then((data) => {
         if (data.success) {
           setTempMessage("Les informations ont bien été modifiées");
-        }else if (data.email) {
+        } else if (data.email) {
           alert("Email déjà utilisé");
         } else if (data.pseudo) {
           alert("pseudo déjà utilisé");
@@ -86,7 +87,26 @@ export default function Profile() {
         navigate(response.redirect);
       });
   }
+  const redirect = () => {
+    navigate("/login");
+  }
 
+  const supprimer = () => {
+    if (confirm("Voulez-vous supprimer votre compte ?")) {
+      fetch("http://localhost:5000/api/deleteUser", {
+        method: "POST",
+        credentials: "include",
+      })
+        .then((response) => response.json())
+        .then((response) => {
+          if (response.success) {
+            navigate("/login");
+          }
+        })
+    } else {
+      alert("Suppression annulee");
+    }
+  }
   if (loading) {
     return <p>Chargement des informations...</p>;
   }
@@ -119,59 +139,69 @@ export default function Profile() {
         </div>
       </nav>
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-        <div className="relative bg-white p-6 rounded-lg shadow-lg">
+        <div className="relative bg-white p-6 rounded-lg shadow-lg min-w-96">
           <h2 className="text-xl font-bold mb-4">Profil utilisateur</h2>
           {/* Affichage conditionnel basé sur le type d'utilisateur */}
-          {user.type === "entreprise" ? (
-            <>
-              <p className="mb-4 text-gray-700">
-                Nom Entreprise :{" "}
-                <input className="font-semibold" name="name" defaultValue={user.nom} onChange={handleInputChange} />
-              </p>
-              <p className="mb-4 text-gray-700">
-                N° Siret : <input className="font-semibold" name="siret" defaultValue={user.siret} onChange={handleInputChange}/>
-              </p>
-            </>
-          ) : (
-            <>
-              <p className="mb-4 text-gray-700">
-                Nom :{" "}
-                <input className="font-semibold" name="name" defaultValue={user.nom} onChange={handleInputChange}/>
-              </p>
-              <p className="mb-4 text-gray-700">
-                Prenom : <input className="font-semibold" name="firstName" defaultValue={user.prenom} onChange={handleInputChange} />
-              </p>
-              <p className="mb-4 text-gray-700">
-                Pseudo : <input className="font-semibold" name="pseudo" defaultValue={user.pseudo} onChange={handleInputChange} />
-              </p>
-            </>
-          )}
-          <p className="mb-4 text-gray-700">
-            Email : <input className="font-semibold" name="email" defaultValue={user.email} onChange={handleInputChange}/>
-          </p>
-
+          <div className="grid  grid-cols-[80px_auto] gap-4">
+            {user.type === "entreprise" ? (
+              <>
+                <p className=" text-gray-700">
+                  Nom Entreprise :
+                </p>
+                <input className="font-semibold border-black border-2 rounded-md" name="name" defaultValue={user.nom} onChange={handleInputChange} />
+                <p className=" text-gray-700">
+                  N° Siret :
+                </p>
+                <input className="font-semibold border-black border-2 rounded-md" name="siret" defaultValue={user.siret} onChange={handleInputChange} />
+              </>
+            ) : (
+              <>
+                <span className=" text-gray-700">
+                  Nom :{" "}
+                </span>
+                <input className="font-semibold border-black border-2 rounded-md" name="name" defaultValue={user.nom} onChange={handleInputChange} />
+                <span className=" text-gray-700">
+                  Prenom :
+                </span>
+                <input className="font-semibold border-black border-2 rounded-md" name="firstName" defaultValue={user.prenom} onChange={handleInputChange} />
+                <span className=" text-gray-700">
+                  Pseudo :
+                </span>
+                <input className="font-semibold border-black border-2 rounded-md" name="pseudo" defaultValue={user.pseudo} onChange={handleInputChange} />
+              </>
+            )}
+            <p className=" text-gray-700">
+              Email :
+            </p>
+            <input className="font-semibold border-black border-2 rounded-md" name="email" defaultValue={user.email} onChange={handleInputChange} />
+          </div>
           {/* Message temporaire affiché au-dessus du contenu */}
           {tempMessage && (
-            <div className="absolute top-0 left-0 w-full bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded-b-md shadow-md z-50">
+            <div className="absolute bottom-full left-0 w-full bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded-md shadow-md z-50">
               <span>{tempMessage}</span>
             </div>
           )}
 
           {/* Bouton de modification */}
-          <button
-            onClick={saveModif}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 mt-8"
-          >
-            Modifier le profil
-          </button>
-          {/* Lien de retour */}
-          <a
-            href="/entreprises"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 mt-4"
-          >
-            Retour
-          </a>
-          <button className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-md shadow-md z-50" onClick={() => logout()}>Logout</button>
+          <div className="flex justify-between">
+            {/* Lien de retour */}
+            <button
+              onClick={redirect}
+              className="bg-blue-500 text-white px-4 py-2 rounded font-semibold hover:bg-blue-600 transition duration-300 mt-8 w-24"
+            >
+              Retour
+            </button>
+            <button
+              onClick={saveModif}
+              className="bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded mt-8 w-[160px]"
+            >
+              Modifier le profil
+            </button>
+          </div>
+          <div className="flex justify-between pt-4">
+            <button className="bg-red-100 border border-red-400 text-red-700 px-4 font-semibold py-2 rounded-md shadow-md z-50 w-24" onClick={() => logout()}>Logout</button>
+            <button className="bg-red-500 border border-red-200 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-md shadow-md z-50 w-[160px]" onClick={() => supprimer()}>Supprimer</button>
+          </div>
         </div>
       </div>
     </>
