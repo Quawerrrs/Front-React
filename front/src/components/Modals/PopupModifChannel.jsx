@@ -11,7 +11,7 @@ export default function PopupModifChannel({ chaine = null, setReload }) {
         cha_id: chaine != null ? chaine.cha_id : 0,
         cha_email: chaine != null ? chaine.cha_email : "",
     });
-    const handleClickDiv = (e) => {
+    const handleClose = (e) => {
         document.getElementById(chaine != null ? "cha_modal_" + chaine.cha_id : "cha_modal_" + 0).style.display = "none";
     }
 
@@ -21,12 +21,15 @@ export default function PopupModifChannel({ chaine = null, setReload }) {
     };
 
     const handleSubmit = () => {
+
         if (chaine == null) {
+            console.log(formData);
             fetch("http://localhost:5000/api/addChannel", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
+                credentials: "include",
                 body: JSON.stringify(formData),
             }).then((response) =>
                 response.json()
@@ -55,63 +58,55 @@ export default function PopupModifChannel({ chaine = null, setReload }) {
             })
         }
     }
-    console.log(chaine);
-    
+
     return (
-        <div id={ chaine != null ? "cha_modal_" + chaine.cha_id :  "cha_modal_" + 0} className=" absolute w-full h-full inset-0 hidden justify-center items-center">
-            <div onClick={handleClickDiv} className=" absolute backdrop-blur-sm w-full h-full inset-0 justify-center items-center">
+        <div id={chaine != null ? "cha_modal_" + chaine.cha_id : "cha_modal_" + 0} className=" absolute w-full h-full inset-0 hidden justify-center items-center">
+            <div onClick={handleClose} className=" absolute backdrop-blur-md w-full h-full inset-0 justify-center items-center">
             </div>
             <div className=" inset-0 z-10">
-                <div className="bg-white p-10 rounded-md flex flex-col gap-y-6 ">
-                    <h3 className="text-lg font-bold text-gray-800">
-                        Nom de la chaine :
+                <div className="bg-white p-10 rounded-md relative flex flex-col gap-y-6 shadow-md min-w-[600px]">
+                    <button onClick={handleClose} className=" bg-transparent border-none absolute top-0 right-0 font-bold px-2">X</button>
+                    <div className="grid  grid-cols-[180px_auto] gap-4">
+                        <h3 className="text-lg font-bold text-gray-800">
+                            Nom de la chaine :
+                        </h3>
                         {chaine != null ?
-                            <input defaultValue={chaine.cha_name} name="cha_name" className="  ml-2 " onChange={handleInputChange} />
-                            : <input name="cha_name" className="  ml-2 " onChange={handleInputChange} />
+                            <input defaultValue={chaine.cha_name} name="cha_name" className="  ml-2 font-semibold border-black border-2 rounded-md" onChange={handleInputChange} />
+                            : <input name="cha_name" className="  ml-2 font-semibold border-black border-2 rounded-md " onChange={handleInputChange} />
                         }
-                    </h3>
-                    <div className="flex items-center">
                         <p className="text-gray-600">Lien de la chaine : </p>
                         {chaine != null ?
-                            <input defaultValue={chaine.cha_url} name="cha_url" className="  ml-2 " onChange={handleInputChange} />
-                            : <input name="cha_url" className="  ml-2 " onChange={handleInputChange} />
-                        }                    </div>
-                    <div className="flex items-center">
-                        <p className="text-gray-600">Thème principal : </p>
-                        {chaine != null ?
-                            <input defaultValue={chaine.cha_theme_1} name="cha_theme_1" className="  ml-2" onChange={handleInputChange} />
-                            : <input name="cha_theme_1" className="  ml-2" onChange={handleInputChange} />
-                        }
+                            <input defaultValue={chaine.cha_url} name="cha_url" className="  ml-2    border-black border-2 rounded-md" onChange={handleInputChange} />
+                            : <input name="cha_url" className="  ml-2 border-black border-2 rounded-md" onChange={handleInputChange} />
+                        }                                            
+                            <p className="text-gray-600">Thème principal : </p>
+                            {chaine != null ?
+                                <input defaultValue={chaine.cha_theme_1} name="cha_theme_1" className="  ml-2    border-black border-2 rounded-md" onChange={handleInputChange} />
+                                : <input name="cha_theme_1" className="  ml-2    border-black border-2 rounded-md" onChange={handleInputChange} />
+                            }
+                            <p className="text-gray-600">Thème secondaire : </p>
+                            {chaine != null ?
+                                <input defaultValue={chaine.cha_theme_2} name="cha_theme_2" className="  ml-2    border-black border-2 rounded-md" onChange={handleInputChange} />
+                                : <input name="cha_theme_2" className="  ml-2    border-black border-2 rounded-md" onChange={handleInputChange} />
+                            }
+                            <p className="text-gray-600">Thème tertiaire : </p>
+                            {chaine != null ?
+                                <input defaultValue={chaine.cha_theme_3} name="cha_theme_3" className="  ml-2    border-black border-2 rounded-md" onChange={handleInputChange} />
+                                : <input name="cha_theme_3" className="  ml-2    border-black border-2 rounded-md" onChange={handleInputChange} />
+                            }
+                        
+                            <p className="text-gray-600">Nombre d'abonnés : </p>
+                            {chaine != null ?
+                                <input defaultValue={chaine.cha_subs} name="cha_subs" className="  ml-2    border-black border-2 rounded-md" onChange={handleInputChange} />
+                                : <input name="cha_subs" className="  ml-2    border-black border-2 rounded-md" onChange={handleInputChange} />
+                            }
+                            <p className="text-gray-600">Email de la chaine : </p>
+                            {chaine != null ?
+                                <input defaultValue={chaine.cha_email} name="cha_email" className="  ml-2    border-black border-2 rounded-md" onChange={handleInputChange} />
+                                : <input name="cha_email" className="  ml-2    border-black border-2 rounded-md" onChange={handleInputChange} />
+                            }
                     </div>
-                    <div className="flex items-center">
-                        <p className="text-gray-600">Thème secondaire : </p>
-                        {chaine != null ?
-                            <input defaultValue={chaine.cha_theme_2} name="cha_theme_2" className="  ml-2" onChange={handleInputChange} />
-                            : <input name="cha_theme_2" className="  ml-2" onChange={handleInputChange} />
-                        }
-                    </div>
-                    <div className="flex items-center">
-                        <p className="text-gray-600">Thème tertiaire : </p>
-                        {chaine != null ?
-                            <input defaultValue={chaine.cha_theme_3} name="cha_theme_3" className="  ml-2" onChange={handleInputChange} />
-                            : <input name="cha_theme_3" className="  ml-2" onChange={handleInputChange} />
-                        }
-                    </div>
-                    <div className="flex items-center">
-                        <p className="text-gray-600">Nombre d'abonnés : </p>
-                        {chaine != null ?
-                            <input defaultValue={chaine.cha_subs} name="cha_subs" className="  ml-2" onChange={handleInputChange} />
-                            : <input name="cha_subs" className="  ml-2" onChange={handleInputChange} />
-                        }
-                    </div>
-                    <div className="flex items-center">
-                        <p className="text-gray-600">Email de la chaine : </p>
-                        {chaine != null ?
-                            <input defaultValue={chaine.cha_email} name="cha_email" className="  ml-2" onChange={handleInputChange} />
-                            : <input name="cha_email" className="  ml-2" onChange={handleInputChange} />
-                        }
-                    </div>
-                    <button onClick={handleSubmit}>Valider</button>
+                    <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4" onClick={handleSubmit}>Valider</button>
                 </div>
 
             </div>
