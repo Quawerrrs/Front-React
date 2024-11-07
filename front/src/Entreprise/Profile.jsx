@@ -25,6 +25,9 @@ export default function Profile() {
     })
       .then((response) => response.json())
       .then((token) => {
+        if (token.error == "notoken"){
+          navigate("/login");
+        }
         setLoading(false)
         setUser(token);
         console.log(token);
