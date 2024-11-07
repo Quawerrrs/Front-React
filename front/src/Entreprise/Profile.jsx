@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios"; // Importation de la biblioth que axios pour faire des requ tes HTTP vers l'API
-import { redirect, useNavigate } from "react-router-dom";
+import { Link, redirect, useNavigate } from "react-router-dom";
 export default function Profile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -15,10 +15,9 @@ export default function Profile() {
     })
       .then((response) => response.json())
       .then((token) => {
-        setLoading(false)
+        setLoading(false);
         setUser(token);
         console.log(token);
-
       });
   }, []);
 
@@ -38,11 +37,12 @@ export default function Profile() {
     fetch("http://localhost:5000/api/session/logout", {
       method: "GET",
       credentials: "include",
-    }).then((response) => response.json())
+    })
+      .then((response) => response.json())
       .then((response) => {
         navigate(response.redirect);
       });
-  }
+  };
 
   if (loading) {
     return <p>Chargement des informations...</p>;
@@ -115,13 +115,18 @@ export default function Profile() {
             Modifier le profil
           </button>
           {/* Lien de retour */}
-          <a
-            href="/entreprises"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 mt-4"
+          <Link
+            to="/entreprises"
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 mt-4 no-underline border-black"
           >
             Retour
-          </a>
-          <button className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-md shadow-md z-50" onClick={() => logout()}>Logout</button>
+          </Link>
+          <button
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-md shadow-md z-50 hover:bg-red-300 transition duration-300 mt-8"
+            onClick={() => logout()}
+          >
+            Logout
+          </button>
         </div>
       </div>
     </>
