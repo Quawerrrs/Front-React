@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import "tailwindcss/tailwind.css";
 
 function Login() {
   const navigate = useNavigate();
@@ -22,7 +21,7 @@ function Login() {
     })
       .then((response) => response.json())
       .then((token) => {
-        if (token.siren !== undefined) {
+        if (token.siret !== undefined) {
           navigate("/entreprises");
         } else if (token.pseudo !== undefined) {
           navigate("/createur");

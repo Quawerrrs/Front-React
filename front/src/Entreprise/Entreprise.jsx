@@ -38,7 +38,7 @@ export default function Entreprise() {
     })
       .then((response) => response.json())
       .then((token) => {
-        if (token.siren !== undefined) {
+        if (token.siret !== undefined) {
           setValidEntreprise(true);
         } else {
           setValidEntreprise(false);
@@ -100,7 +100,7 @@ export default function Entreprise() {
   const handleSelectConversation = (conversation) => {
     setSelectedConversation(conversation);
   };
-  if (validEntreprise) {
+  if (validEntreprise) {    
     return (
       <>
         <nav className="bg-gray-800 p-4 flex justify-between items-center">
@@ -284,15 +284,19 @@ export default function Entreprise() {
 
             {/* Liste des chaînes */}
             <ul className="mt-8">
-              {chaines.map((chaine) => (
+              {chaines && chaines.map((chaine) => (
                 <li
-                  key={chaine.id}
+                  key={chaine.cha_id}
                   className="mb-4 p-4 bg-white rounded-lg shadow-md"
                 >
                   <h3 className="text-lg font-bold text-gray-800">
-                    {chaine.name}
+                    {chaine.cha_name}
                   </h3>
-                  <p className="text-gray-600">{chaine.description}</p>
+                  <div className="flex items-center">
+                    <p className="text-gray-600">Lien :</p>
+                    <a href={chaine.cha_url} className="text-blue-500" target="_blank">{chaine.cha_url.substring(chaine.cha_url.lastIndexOf("@"))}</a>
+                  </div>
+                  <p className="text-gray-600">{"Thème principal : " + chaine.cha_theme_1 + " " + (chaine.cha_theme_2 != "" ? " Thème secondaire : " + chaine.cha_theme_2 : "") + (chaine.cha_theme_3 != "" ? " Thème tertiaire : " + chaine.cha_theme_3 : "") }</p>
                 </li>
               ))}
             </ul>
