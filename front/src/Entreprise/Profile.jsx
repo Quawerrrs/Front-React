@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios"; // Importation de la biblioth que axios pour faire des requ tes HTTP vers l'API
 import { useNavigate } from "react-router-dom";
-
 export default function Profile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -25,7 +24,7 @@ export default function Profile() {
     })
       .then((response) => response.json())
       .then((token) => {
-        setLoading(false)
+        setLoading(false);
         setUser(token);
         console.log(token);
         setFormData({
@@ -82,7 +81,8 @@ export default function Profile() {
     fetch("http://localhost:5000/api/session/logout", {
       method: "GET",
       credentials: "include",
-    }).then((response) => response.json())
+    })
+      .then((response) => response.json())
       .then((response) => {
         navigate(response.redirect);
       });
