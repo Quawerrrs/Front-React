@@ -16,7 +16,6 @@ export default function Admin() {
       .then((response) => response.json())
       .then((token) => {
         if (token.code === code && code !== undefined) {
-          alert("Bon code de validation");
           setValidAdmin(true);
         } else {
           alert("Mauvais code de validation");
