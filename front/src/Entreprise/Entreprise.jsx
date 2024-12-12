@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import PopupDemande from "../components/Modals/PopupDemande";
 
 export default function Entreprise() {
   const [validEntreprise, setValidEntreprise] = useState(false);
@@ -9,6 +10,7 @@ export default function Entreprise() {
   const [sortCategory, setSortCategory] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [search, setSearch] = useState(null);
+  const [showDemande, setShowDemande] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,7 +20,7 @@ export default function Entreprise() {
     })
       .then((response) => response.json())
       .then((token) => {
-        if (token.siren !== undefined) {
+        if (token.siret !== undefined) {
           setValidEntreprise(true);
         } else {
           setValidEntreprise(false);
@@ -73,7 +75,7 @@ export default function Entreprise() {
     setSubCategory(e.target.value);
   };
   const handlePlacement = (id) => {
-    console.log(id);
+    document.getElementById(`cha_demande_${id}`).style.display = "flex";
   };
   if (validEntreprise) {
     return (
@@ -96,16 +98,16 @@ export default function Entreprise() {
           </div>
         </nav>
 
-        <div className="flex min-h-screen">
+        <div className="flex h-[calc(100vh_-_116px)]">
           {/* La box sur la gauche qui prend 1/3 de la largeur */}
-          <div className={`bg-blue-800 text-white p-4 w-1/3 flex flex-col`}>
+          <div className={`bg-blue-800 text-white p-4 w-1/3 flex flex-col `}>
             <h2 className="text-xl font-bold text-center mb-4">
               Conversations
             </h2>
           </div>
 
-          {/* Barre de recherche et menu de tri */}
-          <div className="bg-gray-100 p-8 w-2/3">
+          {/* Autre 2/3 de la page Barre de recherche et menu de tri */}
+          <div className="bg-gray-100 p-8 w-2/3 overflow-scroll">
             <div className="flex items-center space-x-4">
               {/* Barre de recherche */}
               <form className="w-full max-w-md">
@@ -272,6 +274,13 @@ export default function Entreprise() {
         <footer className="bg-gray-800 p-4 text-white text-center">
           © 2024 Streamio. Tous droits réservés.
         </footer>
+        {chaines.map((chaine) => (
+          <PopupDemande
+            showDemande={showDemande}
+            setShowDemande={setShowDemande}
+            chaine={chaine.cha_id}
+          />
+        ))}
       </>
     );
   } else {

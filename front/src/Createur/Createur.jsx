@@ -13,7 +13,8 @@ export default function Createur() {
     fetch("http://localhost:5000/api/session/getSession", {
       method: "GET",
       credentials: "include",
-    }).then((response) => response.json())
+    })
+      .then((response) => response.json())
       .then((token) => {
         if (token.pseudo != undefined) {
           setValidCreateur(true);
@@ -31,8 +32,6 @@ export default function Createur() {
           .then((response) => response.json())
           .then((chaineID) => {
             setChaines(chaineID);
-            console.log(chaineID);
-
           });
       });
   }, [reload]);
@@ -54,12 +53,11 @@ export default function Createur() {
           }
         });
     } else {
-      
     }
-  }
+  };
   const addChannel = () => {
     document.getElementById("cha_modal_0").style.display = "flex";
-  }
+  };
   if (validCreateur) {
     return (
       <>
@@ -82,7 +80,7 @@ export default function Createur() {
         </nav>
 
         {/* Main container */}
-        <div className="flex h-screen pt-[60px]">
+        <div className="flex h-[calc(100vh_-_116px)] pt-[60px]">
           {/* Left Box: Blue box taking 1/3 of the page */}
           <div className="bg-blue-500 w-1/3 p-4">
             <h2 className="text-white text-lg font-bold text-center">Offres</h2>
@@ -91,44 +89,70 @@ export default function Createur() {
 
           {/* Right Content: Rest of the page */}
           <div className="w-2/3 p-4 pl-10 overflow-auto">
-            <h2 className="text-gray-800 text-2xl font-bold">
-              Mes Chaines :
-            </h2>
+            <h2 className="text-gray-800 text-2xl font-bold">Mes Chaines :</h2>
             {/* Rest of your page content */}
             <ol className="mt-8">
-              {chaines && chaines.map((chaine) => (
-                <li
-                  key={chaine.cha_id}
-                  className="mb-4 p-4 bg-white rounded-lg shadow-md"
-                >
-                  <h3 className="text-lg font-bold text-gray-800">
-                    Nom de la chaine : {chaine.cha_name}
-                  </h3>
-                  <div className="flex items-center">
-                    <p className="text-gray-600">Lien de la chaine : {chaine.cha_url}</p>
-                  </div>
-                  <div className="flex items-center">
-                    <p className="text-gray-600">Thème principal : {chaine.cha_theme_1}</p>
-                  </div>
-                  <div className="flex items-center">
-                    <p className="text-gray-600">Thème secondaire : {chaine.cha_theme_2}</p>
-                  </div>
-                  <div className="flex items-center">
-                    <p className="text-gray-600">Thème tertiaire : {chaine.cha_theme_3}</p>
-                  </div>
-                  <div className="flex items-center">
-                    <p className="text-gray-600">Nombre d'abonnés : {chaine.cha_subs} </p>
-                  </div>
-                  <div className="flex items-center">
-                    <p className="text-gray-600">Email de la chaine : {chaine.cha_email}</p>
-                  </div>
-                  <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4" onClick={() => handleUpdate(chaine.cha_id)}>Modifier</button>
-                  <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4" onClick={() => deleteChannel(chaine.cha_id)}>Supprimer</button>
-                  <PopupModifChannel chaine={chaine} setReload={setReload} />
-                </li>
-              ))}
+              {chaines &&
+                chaines.map((chaine) => (
+                  <li
+                    key={chaine.cha_id}
+                    className="mb-4 p-4 bg-white rounded-lg shadow-md"
+                  >
+                    <h3 className="text-lg font-bold text-gray-800">
+                      Nom de la chaine : {chaine.cha_name}
+                    </h3>
+                    <div className="flex items-center">
+                      <p className="text-gray-600">
+                        Lien de la chaine : {chaine.cha_url}
+                      </p>
+                    </div>
+                    <div className="flex items-center">
+                      <p className="text-gray-600">
+                        Thème principal : {chaine.cha_theme_1}
+                      </p>
+                    </div>
+                    <div className="flex items-center">
+                      <p className="text-gray-600">
+                        Thème secondaire : {chaine.cha_theme_2}
+                      </p>
+                    </div>
+                    <div className="flex items-center">
+                      <p className="text-gray-600">
+                        Thème tertiaire : {chaine.cha_theme_3}
+                      </p>
+                    </div>
+                    <div className="flex items-center">
+                      <p className="text-gray-600">
+                        Nombre d'abonnés : {chaine.cha_subs}{" "}
+                      </p>
+                    </div>
+                    <div className="flex items-center">
+                      <p className="text-gray-600">
+                        Email de la chaine : {chaine.cha_email}
+                      </p>
+                    </div>
+                    <button
+                      className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4"
+                      onClick={() => handleUpdate(chaine.cha_id)}
+                    >
+                      Modifier
+                    </button>
+                    <button
+                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"
+                      onClick={() => deleteChannel(chaine.cha_id)}
+                    >
+                      Supprimer
+                    </button>
+                    <PopupModifChannel chaine={chaine} setReload={setReload} />
+                  </li>
+                ))}
             </ol>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4" onClick={() => addChannel()}>Ajouter une chaine</button>
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+              onClick={() => addChannel()}
+            >
+              Ajouter une chaine
+            </button>
             <PopupModifChannel setReload={setReload} />
           </div>
         </div>

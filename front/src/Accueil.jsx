@@ -10,13 +10,8 @@ export default function Accueil() {
   };
   return (
     <>
-      <div>
-        <div>
-          
-          <h1>{isLogin ? "" : ""}</h1>
-          {isLogin ? <Login /> : <Register />}
-        </div>
-      </div>
+      <h1>{isLogin ? "" : ""}</h1>
+      {isLogin ? <Login /> : <Register />}
     </>
   );
 }

@@ -1,25 +1,35 @@
 import React from "react";
-export default function PopupAddProduct({ show, setShowAddProduct }) {
+export default function PopupAddProduct({
+  show,
+  setShowAddProduct,
+  setShowProducts,
+}) {
   const [nom, setNom] = React.useState("");
   const [prix, setPrix] = React.useState(-1);
   const addProductHandler = () => {
     var input = document.querySelector('input[type="file"]');
-    console.log(input.files[0]);
-
+    if (input.files.length == 0) {
+      alert("Veuillez choisir une image");
+      return;
+    }
     var data = new FormData();
     data.append("img", input.files[0]);
     data.append("nom", nom);
     data.append("prix", prix);
-    data.append("bite", "labeuteu");
-    console.log(data);
-
     fetch("http://localhost:5000/api/addProduct", {
       method: "POST",
       credentials: "include",
       body: data,
     })
       .then((response) => response.json())
-      .then((data) => {});
+      .then((data) => {
+        if (data.success) {
+          setShowAddProduct(false);
+          setShowProducts(false);
+        } else {
+          alert(data.message);
+        }
+      });
   };
   return (
     <div
@@ -33,7 +43,7 @@ export default function PopupAddProduct({ show, setShowAddProduct }) {
         }}
         className=" absolute backdrop-blur-md w-full h-full inset-0 justify-center items-center"
       ></div>
-      <div className=" inset-0 z-10">
+      <div className=" inset-0">
         <div className="bg-white p-10 rounded-md relative flex flex-col gap-y-6 shadow-md min-w-[600px]">
           <button
             onClick={() => {
@@ -70,7 +80,7 @@ export default function PopupAddProduct({ show, setShowAddProduct }) {
               type="number"
               name="prix"
               id="prix"
-              placeholder="Prix du produit"
+              placeholder="Prix du produit en €"
               onChange={(e) => setPrix(Number(e.target.value))}
             />
           </div>

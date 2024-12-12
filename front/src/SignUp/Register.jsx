@@ -8,7 +8,7 @@ function Register() {
     email: "",
     password: "",
     confirmPassword: "",
-    siren: "",
+    siret: "",
     adresse: "",
     firstName: "",
     lastName: "",
@@ -22,7 +22,7 @@ function Register() {
     })
       .then((response) => response.json())
       .then((token) => {
-        if (token.siren !== undefined) {
+        if (token.siret !== undefined) {
           navigate("/entreprises");
         } else if (token.pseudo !== undefined) {
           navigate("/createur");
@@ -42,7 +42,7 @@ function Register() {
     setFormData({
       ...formData,
       name: "",
-      siren: "",
+      siret: "",
       adresse: "",
       firstName: "",
       lastName: "",
@@ -63,7 +63,7 @@ function Register() {
       email: formData.email,
       password: formData.password,
       ...(userType === "entreprise" && {
-        siren: formData.siren,
+        siret: formData.siret,
         adresse: formData.adresse,
       }),
       ...(userType === "videaste" && {
@@ -185,7 +185,7 @@ function Register() {
                   <input
                     type="number"
                     name="siret"
-                    value={formData.siren}
+                    value={formData.siret}
                     onChange={handleInputChange}
                     required
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"

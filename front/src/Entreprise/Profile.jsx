@@ -31,7 +31,6 @@ export default function Profile() {
         }
         setLoading(false);
         setUser(token);
-        console.log(token);
         setFormData({
           uti_id: token.id,
           name: token.nom,
@@ -56,25 +55,28 @@ export default function Profile() {
     setTempMessage("Fonction de modification non implémentée");
   };
 
-  const saveModif = () => {
-    fetch("http://localhost:5000/api/updateUser", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    }).then((response) => {
-      response.json().then((data) => {
-        if (data.success) {
-          setTempMessage("Les informations ont bien été modifiées");
-        } else if (data.email) {
-          alert("Email déjà utilisé");
-        } else if (data.pseudo) {
-          alert("pseudo déjà utilisé");
-        }
+  const saveModif = async () => {
+    console.log("test");
+    try {
+      const result = await fetch("http://localhost:5000/api/updateUser", {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
-    });
+      const data = await result.json();
+      if (data.success) {
+        setTempMessage("Les informations ont bien été modifiées");
+      } else if (data.email) {
+        alert("Email déjà utilisé");
+      } else if (data.pseudo) {
+        alert("pseudo déjà utilisé");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleInputChange = (event) => {
@@ -161,7 +163,7 @@ export default function Profile() {
                 <input
                   className="font-semibold border-black border-2 rounded-md"
                   name="siret"
-                  defaultValue={user.siren}
+                  defaultValue={user.siret}
                   onChange={handleInputChange}
                 />
               </>
@@ -230,7 +232,7 @@ export default function Profile() {
               onClick={saveModif}
               className="bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded mt-8 w-[160px]"
             >
-              Modifier le profil
+              Valider Modifs
             </button>
           </div>
           <div className="flex justify-between pt-4 ">
