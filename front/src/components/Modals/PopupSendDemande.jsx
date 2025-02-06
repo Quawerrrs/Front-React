@@ -2,6 +2,7 @@ import React from "react";
 export default function PopupSendDemande({ productID, chaineID }) {
   const [description, setDescription] = React.useState("");
   const [prix, setPrix] = React.useState(-1);
+  const [nbJours, setNbJours] = React.useState(0);
   const HandleClose = () => {
     document.getElementById(
       "dem_modal_" + chaineID + "_" + productID
@@ -14,7 +15,13 @@ export default function PopupSendDemande({ productID, chaineID }) {
         "Content-Type": "application/json",
       },
       credentials: "include",
-      body: JSON.stringify({ description, prix, productID }),
+      body: JSON.stringify({
+        msg: description,
+        prix: prix,
+        pro_id: productID,
+        cha_id: chaineID,
+        nbJours: nbJours,
+      }),
     })
       .then((response) => response.json())
       .then((result) => {
@@ -56,7 +63,6 @@ export default function PopupSendDemande({ productID, chaineID }) {
               className=" min-h-8"
               type="text"
               name="description"
-              id="description"
               rows={4}
               placeholder="Pour une vidéo de 20 minutes avec un placmenet de 30 secondes et un rappel du produit 2 fois dans la vidéo"
               onChange={(e) => setDescription(e.target.value)}
@@ -75,9 +81,19 @@ export default function PopupSendDemande({ productID, chaineID }) {
             <input
               type="number"
               name="prix"
-              id="prix"
               placeholder="Prix en €"
               onChange={(e) => setPrix(Number(e.target.value))}
+            />
+          </div>
+          <div>
+            <label htmlFor="prix" className="mr-2 font-bold">
+              Nombre de jours pour poster la vidéo
+            </label>
+            <input
+              type="number"
+              name="nbJours"
+              placeholder="en jours"
+              onChange={(e) => setNbJours(Number(e.target.value))}
             />
           </div>
           <button
