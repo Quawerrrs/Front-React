@@ -8,6 +8,7 @@ export default function Createur() {
   const [chaines, setChaines] = useState();
   const [reload, setReload] = useState(false);
   const navigate = useNavigate();
+  const [demandesChaines, setDemandesChaines] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:5000/api/session/getSession", {
@@ -34,6 +35,14 @@ export default function Createur() {
             setChaines(chaineID);
           });
       });
+    fetch("http://localhost:5000/api/getDemandesCreateur", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setDemandesChaines(data);
+      });
   }, [reload]);
   const handleUpdate = (id) => {
     document.getElementById(`cha_modal_${id}`).style.display = "flex";
@@ -49,15 +58,48 @@ export default function Createur() {
         .then((response) => response.json())
         .then((data) => {
           if (data.success) {
-            setReload(true);
+            setReload(!reload);
           }
         });
     } else {
     }
   };
+  const refuserDemande = (id) => {
+    if (confirm("Voulez-vous vraiment refuser la demande ?")) {
+      fetch(`http://localhost:5000/api/refuserDemande/${id}`, {
+        method: "PUT",
+        credentials: "include",
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            alert("Demande refusée");
+            setReload(!reload);
+          }
+        });
+    }
+    setReload(!reload);
+  };
+  const validDemande = (id) => {
+    if (confirm("Voulez-vous accepter ce placement de produit ?")) {
+      fetch(`http://localhost:5000/api/validDemande/${id}`, {
+        method: "PUT",
+        credentials: "include",
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            alert("Demande accpetée");
+            setReload(!reload);
+          }
+        });
+    }
+    setReload(!reload);
+  };
   const addChannel = () => {
     document.getElementById("cha_modal_0").style.display = "flex";
   };
+  const annulerDemande = (id) => {};
   if (validCreateur) {
     return (
       <>
@@ -82,21 +124,72 @@ export default function Createur() {
         {/* Main container */}
         <div className="flex h-[calc(100vh_-_116px)]">
           {/* Left Box: Blue box taking 1/3 of the page */}
-          <div className="bg-blue-500 w-1/3 p-4">
-            <h2 className="text-white text-lg font-bold text-center">Offres</h2>
-            {/* You can add more content here */}
+          <div className="bg-blue-800 max-w-[50vw] min-w-[33vw] p-4 overflow-auto">
+            <h2 className="text-white text-lg font-bold mb-4 ml-4">Offres :</h2>
+            <div className="flex gap-2 flex-col">
+              {demandesChaines.map((demandesChaine) =>
+                demandesChaine.map((demande) => (
+                  <div
+                    key={demande.dem_id}
+                    className=" bg-blue-700 p-4 rounded-md"
+                  >
+                    <div className="flex flex-wrap gap-x-2 w-full">
+                      <p className=" font-bold">Demande destiné à : </p>
+                      <p>{demande.cha_name}</p>
+                    </div>
+                    <div className="flex flex-wrap gap-x-2">
+                      <p className=" font-bold">Entreprise : </p>
+                      <p>{demande.ent_nom}</p>
+                    </div>
+                    <div className="flex flex-wrap gap-x-2">
+                      <p className=" font-bold ">Description :</p>
+                      <p className=" overflow-auto max-h-72">
+                        {demande.dem_description}
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-x-2">
+                      <p className=" font-bold">Prix : </p>
+                      <p>{demande.dem_prix} €</p>
+                    </div>
+                    <div className="flex flex-wrap gap-x-2">
+                      <p className=" font-bold">Produit : </p>
+                      <p>{demande.pro_nom}</p>
+                    </div>
+                    <div className="flex flex-wrap gap-x-2">
+                      <p className=" font-bold">Date limite : </p>
+                      <p>{demande.dem_date_limite.split("T")[0]}</p>
+                    </div>
+                    <div>
+                      <button
+                        className="bg-green-500 hover:bg-green-700 border-green-300 border text-white font-semibold py-1 px-4 rounded-md min-w-[max-content]"
+                        onClick={() => validDemande(demande.dem_id)}
+                      >
+                        Valider la demande
+                      </button>
+
+                      <button
+                        className="bg-red-500 border border-red-300 hover:bg-red-700 text-white font-semibold px-4 py-1 rounded-md shadow-md min-w-[max-content]"
+                        onClick={() => refuserDemande(demande.dem_id)}
+                      >
+                        Refuser la demande
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
 
           {/* Right Content: Rest of the page */}
-          <div className="w-2/3 p-4 pl-10 overflow-auto">
+          <div className="w-full p-4 pl-10 overflow-auto">
             <h2 className="text-gray-800 text-2xl font-bold">Mes Chaines :</h2>
             {/* Rest of your page content */}
-            <ol className="mt-8">
+            <ol className="mt-8 flex flex-col">
               {chaines &&
                 chaines.map((chaine) => (
                   <li
                     key={chaine.cha_id}
-                    className="mb-4 p-4 bg-white rounded-lg shadow-md"
+                    className="mb-4 p-4 bg-white rounded-lg shadow-lg shadow-gray-400"
                   >
                     <h3 className="text-lg font-bold text-gray-800">
                       Nom de la chaine : {chaine.cha_name}
@@ -143,6 +236,55 @@ export default function Createur() {
                     >
                       Supprimer
                     </button>
+                    <div className=" pt-2 pb-2">
+                      {chaine.placements.length > 0 ? (
+                        <h1 className=" text-xl font-bold pb-2">
+                          Placements :
+                        </h1>
+                      ) : (
+                        <></>
+                      )}
+
+                      {chaine.placements.map((placement) => (
+                        <div
+                          key={placement.dem_id}
+                          className=" bg-blue-700 p-4 rounded-md flex flex-col justify-center"
+                        >
+                          <div className="flex flex-wrap gap-x-2 pb-1 rounded-md border-2 border-red-600 justify-center bg-red-600 bg-opacity-40">
+                            <p className=" text-lg font-bold">Date limite : </p>
+                            <p className=" text-lg font-bold text-white">
+                              {placement.dem_date_limite.split("T")[0]}
+                            </p>
+                          </div>
+                          <div className="flex flex-wrap gap-x-2 pb-1 justify-center">
+                            <p className=" font-bold">Entreprise : </p>
+                            <p>{placement.ent_nom}</p>
+                            <p className=" font-bold">Prix : </p>
+                            <p>{placement.dem_prix} €</p>
+                            <p className=" font-bold">Produit : </p>
+                            <p>{placement.pro_nom}</p>
+                          </div>
+                          <img
+                            src={placement.pro_img}
+                            alt="Pas d'image du produit"
+                            className=" pb-1 max-h-[33vh] w-[fit-content] self-center"
+                          />
+                          <div className="flex flex-wrap gap-x-2">
+                            <p className=" font-bold ">Description :</p>
+                            <p className=" ">{placement.dem_description}</p>
+                          </div>
+                          <br />
+                          <div>
+                            <button
+                              className="bg-red-500 border border-red-300 hover:bg-red-700 text-white font-semibold px-4 py-1 rounded-md shadow-md min-w-[max-content]"
+                              onClick={() => annulerDemande(placement.dem_id)}
+                            >
+                              Annuler la demande
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                     <PopupModifChannel chaine={chaine} setReload={setReload} />
                   </li>
                 ))}
