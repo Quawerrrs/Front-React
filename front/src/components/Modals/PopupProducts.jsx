@@ -3,7 +3,6 @@ import PopupAddProduct from "./PopupAddProduct";
 
 export default function PopupProducts({ show, setShowProducts, utiId }) {
   const [products, setProducts] = React.useState([]);
-  const [showAddProduct, setShowAddProduct] = React.useState(false);
   React.useEffect(() => {
     fetch("http://localhost:5000/api/getProducts", {
       method: "POST",
@@ -27,9 +26,12 @@ export default function PopupProducts({ show, setShowProducts, utiId }) {
       .then((response) => response.json())
       .then((result) => {
         if (result.success) {
-          setProducts(setShowAddProduct(false));
+          setProducts(false);
         }
       });
+  };
+  const modifProductClick = (id) => {
+    document.getElementById("pro_modal_" + id).style.display = "flex";
   };
   return (
     <div
@@ -44,7 +46,7 @@ export default function PopupProducts({ show, setShowProducts, utiId }) {
         className=" absolute backdrop-blur-md w-full h-full inset-0 justify-center items-center"
       ></div>
       <div className=" inset-0">
-        <div className="bg-white p-10 rounded-md relative flex flex-col gap-y-6 shadow-md min-w-[600px] max-w-[70vw]">
+        <div className="bg-white p-8 rounded-md relative flex flex-col gap-y-4 shadow-md min-w-[600px] max-w-[75vw] max-h-[90vh]">
           <button
             onClick={() => {
               setShowProducts(false);
@@ -53,23 +55,41 @@ export default function PopupProducts({ show, setShowProducts, utiId }) {
           >
             X
           </button>
-          <h2 className="text-lg font-bold text-center">Produits</h2>
-          <div className="grid gap-4 grid-cols-4-[auto]">
+          <h2 className="text-2xl font-bold text-center pb-3">Mes produits</h2>
+          <div className="flex flex-wrap justify-center gap-4 overflow-auto p-6 items-center">
             {products && products.length > 0 ? (
               products.map((product) => (
-                <div className="flex flex-col justify-center items-center">
-                  <div className=" relative max-w-64">
-                    <img src={product.pro_img} alt="" />
+                <>
+                  <div className="flex flex-col justify-between items-center p-4 shadow-lg shadow-gray-500/50 rounded-xl">
+                    <div className="w-full">
+                      <div className=" relative max-w-64">
+                        <img src={product.pro_img} alt="" />
+                      </div>
+                      <div className="flex justify-evenly">
+                        <p>{product.pro_nom}</p>
+                        <p>{product.pro_prix} €</p>
+                      </div>
+                    </div>
+                    <div className="flex justify-evenly w-full">
+                      <button
+                        className="bg-blue-500 border border-blue-200 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md shadow-md"
+                        onClick={() => modifProductClick(product.pro_id)}
+                      >
+                        Modifier
+                      </button>
+                      <button
+                        className="bg-red-500 border border-red-200 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-md shadow-md"
+                        onClick={() => deleteProduct(product.pro_id)}
+                      >
+                        Supprimer
+                      </button>
+                    </div>
                   </div>
-                  <p>{product.pro_nom}</p>
-                  <p>{product.pro_prix} €</p>
-                  <button
-                    className="bg-red-500 border border-red-200 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-md shadow-md"
-                    onClick={() => deleteProduct(product.pro_id)}
-                  >
-                    Supprimer
-                  </button>
-                </div>
+                  <PopupAddProduct
+                    setShowProducts={setShowProducts}
+                    product={product}
+                  />
+                </>
               ))
             ) : (
               <div className="col-start-1 col-end-5">
@@ -81,16 +101,15 @@ export default function PopupProducts({ show, setShowProducts, utiId }) {
           </div>
           <button
             className="bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded mt-8"
-            onClick={() => setShowAddProduct(true)}
+            onClick={() => modifProductClick(0)}
           >
             Ajouter
           </button>
         </div>
       </div>
       <PopupAddProduct
-        show={showAddProduct}
-        setShowAddProduct={setShowAddProduct}
         setShowProducts={setShowProducts}
+        product={{ product: null, pro_id: 0 }}
       />
     </div>
   );

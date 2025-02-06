@@ -35,7 +35,14 @@ export default function Entreprise() {
       method: "POST",
       credentials: "include",
       headers: { "Content-type": "application/json" },
-      body: JSON.stringify({ start: start, length: length }),
+      body: JSON.stringify({
+        start: start,
+        length: length,
+        search: search,
+        sortCategory: sortCategory,
+        sortOrder: subCategory,
+        subscribers: subCategory,
+      }),
     })
       .then((response) => response.json())
       .then((channels) => {
@@ -53,7 +60,14 @@ export default function Entreprise() {
       method: "POST",
       credentials: "include",
       headers: { "Content-type": "application/json" },
-      body: JSON.stringify({ start: 0, length: length, search: search }),
+      body: JSON.stringify({
+        start: 0,
+        length: length,
+        search: search,
+        sortCategory: sortCategory,
+        sortOrder: subCategory,
+        subscribers: subCategory,
+      }),
     })
       .then((response) => response.json())
       .then((channels) => {
@@ -73,6 +87,54 @@ export default function Entreprise() {
   };
   const handleSubCategoryChange = (e) => {
     setSubCategory(e.target.value);
+    var subscribers = 0;
+    var sortOrder = "";
+    if (sortCategory == "theme") {
+      switch (e.target.value) {
+        case "1":
+          sortOrder = "ASC";
+          break;
+        case "2":
+          sortOrder = "DESC";
+          break;
+        default:
+          sortOrder = "ASC";
+      }
+    } else if (sortCategory == "subscribers") {
+      switch (e.target.value) {
+        case "1":
+          subscribers = 1;
+          break;
+        case "2":
+          subscribers = 10;
+          break;
+        case "3":
+          subscribers = 100;
+          break;
+        case "4":
+          subscribers = 1000;
+          break;
+        default:
+          subscribers = 0;
+      }
+    }
+    fetch("http://localhost:5000/api/getchannels", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({
+        start: 0,
+        length: length,
+        search: search,
+        sortCategory: sortCategory,
+        sortOrder: sortOrder,
+        subscribers: subscribers,
+      }),
+    })
+      .then((response) => response.json())
+      .then((channels) => {
+        setChaines(channels);
+      });
   };
   const handlePlacement = (id) => {
     document.getElementById(`cha_demande_${id}`).style.display = "flex";
@@ -170,34 +232,76 @@ export default function Entreprise() {
                   className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-800"
                 >
                   <option value="">Sélectionner une catégorie</option>
-                  <option value="creationDate">Date de création</option>
                   <option value="subscribers">Nombre d'abonnés</option>
                   <option value="theme">Thème</option>
                 </select>
               </div>
 
               {/* Sous-catégorie basée sur le choix */}
-              {sortCategory === "creationDate" && (
+              {sortCategory === "subscribers" && (
                 <div className="flex items-center">
                   <label
-                    htmlFor="creation-date"
+                    htmlFor="sub-category"
                     className="mr-2 text-gray-700 font-medium"
                   >
-                    Ordre :
+                    Sous-catégorie :
                   </label>
                   <select
-                    id="creation-date"
+                    id="sub-category"
                     value={subCategory}
                     onChange={handleSubCategoryChange}
                     className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-800"
                   >
-                    <option value="">Sélectionner</option>
-                    <option value="asc">Croissant</option>
-                    <option value="desc">Décroissant</option>
+                    <option value="">0 ou plus</option>
+                    <option value="1">plus de 1K</option>
+                    <option value="2">plus de 10K</option>
+                    <option value="3">plus de 100K</option>
+                    <option value="4">plus de 1 M</option>
                   </select>
                 </div>
               )}
 
+              {sortCategory === "theme" && (
+                <div className="flex items-center">
+                  <label
+                    htmlFor="sub-category"
+                    className="mr-2 text-gray-700 font-medium"
+                  >
+                    Sous-catégorie :
+                  </label>
+                  <select
+                    id="sub-category"
+                    value={subCategory}
+                    onChange={handleSubCategoryChange}
+                    className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-800"
+                  >
+                    <option value="">choisir</option>
+                    <option value="1">croissant</option>
+                    <option value="2">décroissant</option>
+                  </select>
+                </div>
+              )}
+
+              {sortCategory === "budget" && (
+                <div className="flex items-center">
+                  <label
+                    htmlFor="sub-category"
+                    className="mr-2 text-gray-700 font-medium"
+                  >
+                    Sous-catégorie :
+                  </label>
+                  <select
+                    id="sub-category"
+                    value={subCategory}
+                    onChange={handleSubCategoryChange}
+                    className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-800"
+                  >
+                    <option value="">choisir</option>
+                    <option value="1">croissant</option>
+                    <option value="2">décroissant</option>
+                  </select>
+                </div>
+              )}
               {/* Ajouter d'autres options selon les catégories */}
             </div>
 
@@ -278,7 +382,7 @@ export default function Entreprise() {
           <PopupDemande
             showDemande={showDemande}
             setShowDemande={setShowDemande}
-            chaine={chaine.cha_id}
+            chaine={chaine}
           />
         ))}
       </>

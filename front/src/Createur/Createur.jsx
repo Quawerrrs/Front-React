@@ -61,7 +61,7 @@ export default function Createur() {
   if (validCreateur) {
     return (
       <>
-        <nav className="bg-gray-800 p-4 flex justify-between items-center inset-x-0 fixed">
+        <nav className="bg-gray-800 p-4 flex justify-between items-center">
           <div className="text-orange-500 text-xl font-bold">Streamio</div>
           <div className="space-x-4">
             <a
@@ -80,7 +80,7 @@ export default function Createur() {
         </nav>
 
         {/* Main container */}
-        <div className="flex h-[calc(100vh_-_116px)] pt-[60px]">
+        <div className="flex h-[calc(100vh_-_116px)]">
           {/* Left Box: Blue box taking 1/3 of the page */}
           <div className="bg-blue-500 w-1/3 p-4">
             <h2 className="text-white text-lg font-bold text-center">Offres</h2>

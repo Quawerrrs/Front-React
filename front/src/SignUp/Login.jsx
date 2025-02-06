@@ -21,16 +21,20 @@ function Login() {
     })
       .then((response) => response.json())
       .then((token) => {
-        if (token.siren !== undefined) {
+        if (token.type === "entreprise") {
           navigate("/entreprises");
-        } else if (token.pseudo !== undefined) {
+        } else if (token.type === "createur") {
           navigate("/createur");
-        } else if (token.code !== undefined) {
+        } else if (token.type === "admin") {
           navigate("/admin");
         }
       });
   }, [navigate]);
 
+  const HandleMdpOublie = (e) => {
+    e.preventDefault();
+    navigate("/mdpoublie");
+  };
   const onSubmit = async (data) => {
     try {
       const response = await fetch(
@@ -147,6 +151,15 @@ function Login() {
             className="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 mb-4"
           >
             Se connecter
+          </button>
+          <button
+            type="submit"
+            onClick={(e) => {
+              HandleMdpOublie(e);
+            }}
+            className="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 mb-4"
+          >
+            Mot de passe oublié ?
           </button>
           <p className="text-center text-white">
             Pas encore inscrit ?{" "}

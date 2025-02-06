@@ -145,7 +145,7 @@ export default function Profile() {
           </a>
         </div>
       </nav>
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+      <div className="h-[calc(100vh_-_60px)] flex flex-col items-center justify-center bg-gray-100">
         <div className="relative bg-white p-6 rounded-lg shadow-lg min-w-[30%]">
           <h2 className="text-xl font-bold mb-4">Profil utilisateur</h2>
           {/* Affichage conditionnel basé sur le type d'utilisateur */}
