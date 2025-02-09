@@ -52,10 +52,10 @@ function Login() {
       const result = await response.json();
 
       // Vérifie si le compte est bloqué
-      if (result.is_blocked === 1) {
+      if (result.is_blocked) {
         setIsBlocked(true); // Affiche la popup pour le compte bloqué
         setBlockReason(result.block_reason); // Définit la raison du blocage
-        return; // Sort de la fonction pour éviter d'exécuter d'autres redirections
+        return;
       }
 
       if (result.redirect === "entreprise") {

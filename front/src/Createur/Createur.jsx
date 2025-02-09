@@ -99,7 +99,21 @@ export default function Createur() {
   const addChannel = () => {
     document.getElementById("cha_modal_0").style.display = "flex";
   };
-  const annulerDemande = (id) => {};
+  const annulerDemande = (id) => {
+    if (confirm("Voulez-vous vraiment supprimer la demande ?")) {
+      fetch(`http://localhost:5000/api/deleteDemande/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            alert("Demande supprimée");
+            setReload(!reload);
+          }
+        });
+    }
+  };
   if (validCreateur) {
     return (
       <>
@@ -159,7 +173,7 @@ export default function Createur() {
                       <p className=" font-bold">Date limite : </p>
                       <p>{demande.dem_date_limite.split("T")[0]}</p>
                     </div>
-                    <div>
+                    <div className="flex flex-wrap gap-2 mt-2">
                       <button
                         className="bg-green-500 hover:bg-green-700 border-green-300 border text-white font-semibold py-1 px-4 rounded-md min-w-[max-content]"
                         onClick={() => validDemande(demande.dem_id)}
@@ -189,56 +203,64 @@ export default function Createur() {
                 chaines.map((chaine) => (
                   <li
                     key={chaine.cha_id}
-                    className="mb-4 p-4 bg-white rounded-lg shadow-lg shadow-gray-400"
+                    className="mb-4 p-4 bg-gray-800 rounded-lg shadow-lg shadow-gray-400"
                   >
-                    <h3 className="text-lg font-bold text-gray-800">
-                      Nom de la chaine : {chaine.cha_name}
+                    <h3 className="text-xl font-bold text-orange-600">
+                      {chaine.cha_name}
                     </h3>
                     <div className="flex items-center">
-                      <p className="text-gray-600">
-                        Lien de la chaine : {chaine.cha_url}
+                      <p className="text-gray-300">
+                        <b>Lien de la chaine : </b>
+                        {chaine.cha_url}
                       </p>
                     </div>
                     <div className="flex items-center">
-                      <p className="text-gray-600">
-                        Thème principal : {chaine.cha_theme_1}
+                      <p className="text-gray-300">
+                        <b>Thème principal : </b>
+                        {chaine.cha_theme_1}
                       </p>
                     </div>
                     <div className="flex items-center">
-                      <p className="text-gray-600">
-                        Thème secondaire : {chaine.cha_theme_2}
+                      <p className="text-gray-300">
+                        <b>Thème secondaire : </b>
+                        {chaine.cha_theme_2 ? chaine.cha_theme_2 : "Aucun"}
                       </p>
                     </div>
                     <div className="flex items-center">
-                      <p className="text-gray-600">
-                        Thème tertiaire : {chaine.cha_theme_3}
+                      <p className="text-gray-300">
+                        <b>Thème tertiaire : </b>
+                        {chaine.cha_theme_3 ? chaine.cha_theme_3 : "Aucun"}
                       </p>
                     </div>
                     <div className="flex items-center">
-                      <p className="text-gray-600">
-                        Nombre d'abonnés : {chaine.cha_subs}{" "}
+                      <p className="text-gray-300">
+                        <b>Nombre d'abonnés : </b>
+                        {chaine.cha_subs}{" "}
                       </p>
                     </div>
                     <div className="flex items-center">
-                      <p className="text-gray-600">
-                        Email de la chaine : {chaine.cha_email}
+                      <p className="text-gray-300">
+                        <b>Email de la chaine : </b>
+                        {chaine.cha_email}
                       </p>
                     </div>
-                    <button
-                      className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4"
-                      onClick={() => handleUpdate(chaine.cha_id)}
-                    >
-                      Modifier
-                    </button>
-                    <button
-                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"
-                      onClick={() => deleteChannel(chaine.cha_id)}
-                    >
-                      Supprimer
-                    </button>
+                    <div className="flex gap-2">
+                      <button
+                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4"
+                        onClick={() => handleUpdate(chaine.cha_id)}
+                      >
+                        Modifier
+                      </button>
+                      <button
+                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"
+                        onClick={() => deleteChannel(chaine.cha_id)}
+                      >
+                        Supprimer
+                      </button>
+                    </div>
                     <div className=" pt-2 pb-2">
                       {chaine.placements.length > 0 ? (
-                        <h1 className=" text-xl font-bold pb-2">
+                        <h1 className=" text-xl font-bold pb-2 text-orange-600">
                           Placements :
                         </h1>
                       ) : (
