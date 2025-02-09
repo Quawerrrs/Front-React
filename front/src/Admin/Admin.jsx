@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import PopupCode from "./PopupCode";
+import { useNavigate } from "react-router-dom";
 
 export default function Admin() {
   const [validAdmin, setValidAdmin] = useState(false);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [code, setCode] = useState(""); // Assuming you need a state for the validation code
+  const navigate = useNavigate();
 
   // Validation de l'admin avec le code de session
   useEffect(() => {
@@ -14,11 +16,11 @@ export default function Admin() {
       credentials: "include",
     })
       .then((response) => response.json())
-      .then((token) => {
-        if (token.code === code && code !== undefined) {
-          setValidAdmin(true);
-        } else {
-          alert("Mauvais code de validation");
+      .then((data) => {
+        console.log(data.success);
+
+        if (!data.success) {
+          navigate("/login");
         }
       });
   }, [code]); // Include code in dependencies
@@ -55,7 +57,7 @@ export default function Admin() {
     ) {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/deleteUser/${userId}`,
+          `http://localhost:5000/api/deleteSpecificUser/${userId}`,
           {
             method: "DELETE",
             credentials: "include",
@@ -80,7 +82,16 @@ export default function Admin() {
       }
     }
   };
-
+  const Logout = () => {
+    fetch("http://localhost:5000/api/session/logout", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        navigate(response.redirect);
+      });
+  };
   // Fonction pour bloquer un utilisateur
   const handleBlockUser = async (userId) => {
     const reason = window.prompt("Veuillez entrer la raison du blocage :"); // Demande à l'admin d'entrer une raison
@@ -123,7 +134,7 @@ export default function Admin() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
       {validAdmin ? (
         <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-lg">
           <h1 className="text-2xl font-bold text-green-600 mb-4">
@@ -172,6 +183,14 @@ export default function Admin() {
                   <p className="text-gray-500">Aucun utilisateur trouvé</p>
                 )}
               </ul>
+              <div className=" flex justify-end">
+                <button
+                  onClick={() => Logout()}
+                  className="bg-red-100 border border-red-400 text-red-700 px-4 font-semibold py-2 rounded-md shadow-md mt-6"
+                >
+                  Logout
+                </button>
+              </div>
             </div>
           )}
         </div>

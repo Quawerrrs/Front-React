@@ -25,6 +25,7 @@ export default function Entreprise() {
           setValidEntreprise(true);
         } else {
           setValidEntreprise(false);
+          navigate("/login");
         }
       });
 

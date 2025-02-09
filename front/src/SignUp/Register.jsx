@@ -100,24 +100,40 @@ function Register() {
   };
 
   return (
-    <div
-      className="relative min-h-screen bg-cover bg-center"
-      style={{
-        backgroundImage:
-          'url("https://francis-gagnon.com/wp-content/uploads/2019/09/2017-09-27_FGagnon_91245-1080x607.jpg")',
-      }}
-    >
-      <div className="w-screen h-screen opacity-60 backdrop-blur-sm flex items-center justify-center bg-black">
-        <div className="relative z-10 flex items-center justify-center min-h-screen p-4 animate-fadeInFromTop">
-          <form
-            className="max-w-md w-full bg-white bg-opacity-70 backdrop-blur-md p-6 rounded-lg shadow-lg"
-            onSubmit={handleSubmit}
-          >
-            <h2 className="text-xl font-bold text-white mb-4 text-center shadow-md">
-              Inscription
-            </h2>
+    <div className="w-screen h-screen flex items-center justify-center">
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-900 transition-all duration-500 ease-in-out filter brightness-80 group-hover:brightness-90 group-hover:shadow-lg"></div>
 
-            <div className="mb-4">
+      <div className="relative z-10 flex items-center justify-center min-h-screen p-4 animate-fadeInFromTop">
+        <form
+          className=" w-full bg-black p-6 rounded-lg shadow-lg transition-transform duration-1000"
+          onSubmit={handleSubmit}
+          style={{
+            boxShadow: "0 4px 15px rgba(255, 255, 255, 0.4)",
+            border: "2px solid white",
+            fontFamily: "'Fascinate Inline', cursive",
+          }}
+        >
+          <h2 className="text-xl font-bold text-white mb-4 text-center shadow-md">
+            Inscription
+          </h2>
+
+          <div className="mb-4">
+            <label className="block text-white font-semibold mb-2">
+              Type de compte :
+            </label>
+            <select
+              value={userType}
+              onChange={handleUserTypeChange}
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+            >
+              <option value="entreprise">Entreprise</option>
+              <option value="videaste">Vidéaste</option>
+            </select>
+          </div>
+
+          <div className="mb-4 flex gap-4">
+            <div>
               <label className="block text-white font-semibold mb-2">
                 {userType === "entreprise" ? "Nom de l'entreprise" : "Pseudo"} :
               </label>
@@ -134,7 +150,7 @@ function Register() {
               />
             </div>
 
-            <div className="mb-4">
+            <div>
               <label className="block text-white font-semibold mb-2">
                 Email :
               </label>
@@ -147,8 +163,10 @@ function Register() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               />
             </div>
+          </div>
 
-            <div className="mb-4">
+          <div className="mb-4 flex gap-4">
+            <div>
               <label className="block text-white font-semibold mb-2">
                 Mot de passe :
               </label>
@@ -162,7 +180,7 @@ function Register() {
               />
             </div>
 
-            <div className="mb-4">
+            <div>
               <label className="block text-white font-semibold mb-2">
                 Confirmez le mot de passe :
               </label>
@@ -175,10 +193,12 @@ function Register() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               />
             </div>
+          </div>
 
-            {userType === "entreprise" && (
-              <>
-                <div className="mb-4">
+          {userType === "entreprise" && (
+            <>
+              <div className="mb-4 flex gap-4">
+                <div>
                   <label className="block text-white font-semibold mb-2">
                     N° SIRET :
                   </label>
@@ -191,7 +211,7 @@ function Register() {
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
                   />
                 </div>
-                <div className="mb-4">
+                <div>
                   <label className="block text-white font-semibold mb-2">
                     Adresse du siège :
                   </label>
@@ -204,25 +224,14 @@ function Register() {
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
                   />
                 </div>
-              </>
-            )}
+              </div>
+            </>
+          )}
 
-            {userType === "videaste" && (
-              <>
-                <div className="mb-4">
-                  <label className="block text-white font-semibold mb-2">
-                    Prénom :
-                  </label>
-                  <input
-                    type="text"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-                  />
-                </div>
-                <div className="mb-4">
+          {userType === "videaste" && (
+            <>
+              <div className="mb-4 flex gap-4">
+                <div>
                   <label className="block text-white font-semibold mb-2">
                     Nom :
                   </label>
@@ -235,39 +244,37 @@ function Register() {
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
                   />
                 </div>
-              </>
-            )}
+                <div>
+                  <label className="block text-white font-semibold mb-2">
+                    Prénom :
+                  </label>
+                  <input
+                    type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                  />
+                </div>
+              </div>
+            </>
+          )}
 
-            <div className="mb-4">
-              <label className="block text-white font-semibold mb-2">
-                Type de compte :
-              </label>
-              <select
-                value={userType}
-                onChange={handleUserTypeChange}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-              >
-                <option value="entreprise">Entreprise</option>
-                <option value="videaste">Vidéaste</option>
-              </select>
-            </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300"
+          >
+            S'inscrire
+          </button>
 
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300"
-            >
-              S'inscrire
-            </button>
-
-            <p className="text-center text-white mt-4">
-              Déjà inscrit ?{" "}
-              <a href="/login" className="text-blue-400 hover:underline">
-                Connectez-vous
-              </a>
-            </p>
-          </form>
-        </div>
+          <p className="text-center text-white mt-4">
+            Déjà inscrit ?{" "}
+            <a href="/login" className="text-blue-400 hover:underline">
+              Connectez-vous
+            </a>
+          </p>
+        </form>
       </div>
     </div>
   );
