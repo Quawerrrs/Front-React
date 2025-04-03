@@ -21,15 +21,20 @@ function Login() {
     })
       .then((response) => response.json())
       .then((token) => {
-        if (token.siret !== undefined) {
+        if (token.type === "entreprise") {
           navigate("/entreprises");
-        } else if (token.pseudo !== undefined) {
+        } else if (token.type === "createur") {
           navigate("/createur");
-        } else if (token.code !== undefined) {
+        } else if (token.type === "admin") {
           navigate("/admin");
         }
       });
   }, [navigate]);
+
+  const HandleMdpOublie = (e) => {
+    e.preventDefault();
+    navigate("/mdpoublie");
+  };
 
   const onSubmit = async (data) => {
     try {
@@ -48,12 +53,13 @@ function Login() {
       const result = await response.json();
 
       // Vérifie si le compte est bloqué
-      if (result.is_blocked === 1) {
+      if (result.success === "accountBlocked") {
         setIsBlocked(true); // Affiche la popup pour le compte bloqué
-        setBlockReason(result.block_reason); // Définit la raison du blocage
+        setBlockReason(result.message || "Votre compte a été bloqué pour une raison inconnue."); // Définit la raison du blocage
         return; // Sort de la fonction pour éviter d'exécuter d'autres redirections
       }
 
+      // Si le compte n'est pas bloqué, continue avec la logique de connexion normale
       if (result.redirect === "entreprise") {
         navigate("/entreprises");
       } else if (result.redirect === "createur") {
@@ -87,9 +93,7 @@ function Login() {
       <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-900 transition-all duration-500 ease-in-out filter brightness-80 group-hover:brightness-90 group-hover:shadow-lg"></div>
       <div className="relative z-10 w-full p-4 flex items-center justify-center">
         <form
-          className={`max-w-sm w-full bg-black p-6 rounded-lg shadow-lg transition-transform duration-1000 ${
-            isVisible ? "animate-fadeInFromTop" : "opacity-0"
-          }`}
+          className={`max-w-sm w-full bg-black p-6 rounded-lg shadow-lg transition-transform duration-1000 ${isVisible ? "animate-fadeInFromTop" : "opacity-0"}`}
           onSubmit={handleSubmit(onSubmit)}
           style={{
             boxShadow: "0 4px 15px rgba(255, 255, 255, 0.4)",
@@ -147,6 +151,15 @@ function Login() {
             className="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 mb-4"
           >
             Se connecter
+          </button>
+          <button
+            type="submit"
+            onClick={(e) => {
+              HandleMdpOublie(e);
+            }}
+            className="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 mb-4"
+          >
+            Mot de passe oublié ?
           </button>
           <p className="text-center text-white">
             Pas encore inscrit ?{" "}

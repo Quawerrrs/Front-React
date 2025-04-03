@@ -7,6 +7,8 @@ import Accueil from "./Accueil.jsx";
 import Register from "./SignUp/Register.jsx";
 import Login from "./SignUp/Login.jsx";
 import Profile from "./Entreprise/Profile.jsx";
+import MdpOublie from "./SignUp/MdpOublie.jsx";
+import ChangeMdp from "./SignUp/ChangeMdp.jsx";
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
         <Route path="/entreprises" element={<Entreprise />} />
         <Route path="/createur" element={<Createur />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/mdpoublie" element={<MdpOublie />} />
+        <Route path="/changemdp" element={<ChangeMdp />} />
       </Routes>
     </>
   );
