@@ -57,6 +57,7 @@ function Login() {
         setIsBlocked(true); // Affiche la popup pour le compte bloqué
         setBlockReason(result.message || "Votre compte a été bloqué pour une raison inconnue."); // Définit la raison du blocage
         return; // Sort de la fonction pour éviter d'exécuter d'autres redirections
+
       }
 
       // Si le compte n'est pas bloqué, continue avec la logique de connexion normale

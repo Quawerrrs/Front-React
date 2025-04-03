@@ -17,7 +17,6 @@ export default function PopupCode({ validAdmin }) {
       .then((response) => response.json())
       .then((token) => {
         if (token.code === code && code !== "") {
-          alert("Bon code de validation");
           validAdmin(true);
           navigate("/admin"); // Redirect to the admin page
         } else {

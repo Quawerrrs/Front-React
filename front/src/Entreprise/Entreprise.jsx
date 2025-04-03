@@ -11,6 +11,7 @@ export default function Entreprise() {
   const [subCategory, setSubCategory] = useState("");
   const [search, setSearch] = useState(null);
   const [showDemande, setShowDemande] = useState(false);
+  const [demandes, setDemandes] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,10 +25,21 @@ export default function Entreprise() {
           setValidEntreprise(true);
         } else {
           setValidEntreprise(false);
+          navigate("/login");
         }
       });
 
     getMoreChannels();
+
+    fetch("http://localhost:5000/api/getDemandesEntreprise", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setDemandes(data);
+        console.log(data);
+      });
   }, []);
 
   const getMoreChannels = () => {
@@ -139,6 +151,28 @@ export default function Entreprise() {
   const handlePlacement = (id) => {
     document.getElementById(`cha_demande_${id}`).style.display = "flex";
   };
+  const deleteDemande = (id) => {
+    if (confirm("Voulez-vous vraiment supprimer la demande ?")) {
+      fetch(`http://localhost:5000/api/deleteDemande/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            alert("Demande supprimée");
+            fetch("http://localhost:5000/api/getDemandesEntreprise", {
+              method: "GET",
+              credentials: "include",
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                setDemandes(data);
+              });
+          }
+        });
+    }
+  };
   if (validEntreprise) {
     return (
       <>
@@ -162,14 +196,56 @@ export default function Entreprise() {
 
         <div className="flex h-[calc(100vh_-_116px)]">
           {/* La box sur la gauche qui prend 1/3 de la largeur */}
-          <div className={`bg-blue-800 text-white p-4 w-1/3 flex flex-col `}>
-            <h2 className="text-xl font-bold text-center mb-4">
-              Conversations
-            </h2>
+          <div
+            className={`bg-blue-800 text-white p-4 max-w-[33.33vw] min-w-[25vw] flex flex-col overflow-auto`}
+          >
+            <h2 className="text-xl font-bold mb-4 ml-4">Demandes en cours</h2>
+            <div className="flex gap-2 flex-col">
+              {demandes.map((demande) => (
+                <div
+                  key={demande.dem_id}
+                  className={`${
+                    !demande.dem_refus ? " bg-blue-700" : " bg-gray-800"
+                  } p-4 rounded-md`}
+                >
+                  {demande.dem_refus ? (
+                    <h1 className="text-xl text-red-600 font-bold rounded-lg text-center">
+                      Proposition Refusée
+                    </h1>
+                  ) : (
+                    <></>
+                  )}
+                  <div className="flex flex-wrap gap-x-2">
+                    <p className=" font-bold">Demande destiné à : </p>
+                    <p>{demande.cha_name}</p>
+                  </div>
+                  <div className="flex flex-wrap gap-x-2">
+                    <p className=" font-bold">Description :</p>
+                    <p className="overflow-hidden max-h-48 max-w-[33vw]">
+                      {demande.dem_description}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-x-2">
+                    <p className=" font-bold">Prix : </p>
+                    <p>{demande.dem_prix} €</p>
+                  </div>
+                  <div className="flex flex-wrap gap-x-2">
+                    <p className=" font-bold">Produit : </p>
+                    <p>{demande.pro_nom}</p>
+                  </div>
+                  <button
+                    className="bg-red-500 border border-red-200 hover:bg-red-700 text-white font-semibold px-4 py-1 rounded-md shadow-md w-full min-w-[max-content]"
+                    onClick={() => deleteDemande(demande.dem_id)}
+                  >
+                    Annuler la demande
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Autre 2/3 de la page Barre de recherche et menu de tri */}
-          <div className="bg-gray-100 p-8 w-2/3 overflow-scroll">
+          <div className="bg-gray-100 p-8 w-full overflow-scroll">
             <div className="flex items-center space-x-4">
               {/* Barre de recherche */}
               <form className="w-full max-w-md">
@@ -252,6 +328,7 @@ export default function Entreprise() {
                     onChange={handleSubCategoryChange}
                     className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-800"
                   >
+
                     <option value="">0 ou plus</option>
                     <option value="1">plus de 1K</option>
                     <option value="2">plus de 10K</option>
@@ -260,7 +337,6 @@ export default function Entreprise() {
                   </select>
                 </div>
               )}
-
               {sortCategory === "theme" && (
                 <div className="flex items-center">
                   <label
