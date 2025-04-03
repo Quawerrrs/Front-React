@@ -328,6 +328,7 @@ export default function Entreprise() {
                     onChange={handleSubCategoryChange}
                     className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-800"
                   >
+
                     <option value="">0 ou plus</option>
                     <option value="1">plus de 1K</option>
                     <option value="2">plus de 10K</option>
@@ -336,7 +337,6 @@ export default function Entreprise() {
                   </select>
                 </div>
               )}
-
               {sortCategory === "theme" && (
                 <div className="flex items-center">
                   <label
@@ -464,6 +464,6 @@ export default function Entreprise() {
       </>
     );
   } else {
-    navigate("/login");
+    navigate("");
   }
 }

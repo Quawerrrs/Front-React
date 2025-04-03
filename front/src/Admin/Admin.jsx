@@ -6,6 +6,7 @@ export default function Admin() {
   const [validAdmin, setValidAdmin] = useState(false);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [filter, setFilter] = useState("all"); // "all", "blocked", "unblocked"
   const [code, setCode] = useState(""); // Assuming you need a state for the validation code
   const navigate = useNavigate();
 
@@ -23,7 +24,7 @@ export default function Admin() {
           navigate("/login");
         }
       });
-  }, [code]); // Include code in dependencies
+  }, [code]);
 
   // Requête pour récupérer les utilisateurs après validation de l'admin
   useEffect(() => {
@@ -52,9 +53,7 @@ export default function Admin() {
 
   // Fonction pour supprimer un utilisateur
   const handleDeleteUser = async (userId) => {
-    if (
-      window.confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?")
-    ) {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?")) {
       try {
         const response = await fetch(
           `http://localhost:5000/api/deleteSpecificUser/${userId}`,
@@ -66,7 +65,6 @@ export default function Admin() {
         const data = await response.json();
 
         if (data.success) {
-          // Mettre à jour l'état des utilisateurs pour retirer l'utilisateur supprimé
           setUsers((prevUsers) =>
             prevUsers.filter((user) => user.uti_id !== userId)
           );
@@ -76,12 +74,15 @@ export default function Admin() {
         }
       } catch (err) {
         console.error("Erreur lors de la suppression :", err);
-        alert(
-          "Une erreur s'est produite lors de la suppression de l'utilisateur."
-        );
+        alert("Une erreur s'est produite lors de la suppression de l'utilisateur.");
       }
     }
   };
+  // Fonction pour bloquer ou débloquer un utilisateur
+  const handleBlockUser = async (userId, isBlocked) => {
+    const action = isBlocked ? "unblock" : "block"; // Si l'utilisateur est bloqué, on va le débloquer, sinon on le bloque
+    const reason = action === "block" ? window.prompt("Veuillez entrer la raison du blocage :") : null;
+    
   const Logout = () => {
     fetch("http://localhost:5000/api/session/logout", {
       method: "GET",
@@ -92,54 +93,99 @@ export default function Admin() {
         navigate(response.redirect);
       });
   };
-  // Fonction pour bloquer un utilisateur
-  const handleBlockUser = async (userId) => {
-    const reason = window.prompt("Veuillez entrer la raison du blocage :"); // Demande à l'admin d'entrer une raison
 
-    if (reason) {
-      try {
-        const response = await fetch(
-          `http://localhost:5000/api/blockUser/${userId}`,
-          {
-            method: "POST",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ reason }), // Envoie la raison dans le corps de la requête
-          }
-        );
 
-        const data = await response.json();
-
-        if (data.success) {
-          alert("Utilisateur bloqué avec succès !");
-          // Vous pouvez mettre à jour l'état des utilisateurs ici si nécessaire
-          setUsers((prevUsers) =>
-            prevUsers.map(
-              (user) =>
-                user.uti_id === userId ? { ...user, is_blocked: true } : user // Correct property name
-            )
-          );
-        } else {
-          alert("Erreur lors du blocage de l'utilisateur.");
-        }
-      } catch (err) {
-        console.error("Erreur lors du blocage :", err);
-        alert("Une erreur s'est produite lors du blocage de l'utilisateur.");
-      }
-    } else {
+    if (action === "block" && !reason) {
       alert("Raison de blocage annulée.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/${action}User/${userId}`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: action === "block" ? JSON.stringify({ reason }) : null, // Envoie la raison seulement pour le blocage
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert(`Utilisateur ${action === "block" ? "bloqué" : "débloqué"} avec succès !`);
+        // Mettre à jour l'état des utilisateurs ici
+        setUsers((prevUsers) =>
+          prevUsers.map(
+            (user) =>
+              user.uti_id === userId ? { ...user, is_blocked: !isBlocked } : user // Inverse le statut de blocage
+          )
+        );
+      } else {
+        alert(`Erreur lors du ${action === "block" ? "blocage" : "déblocage"} de l'utilisateur.`);
+      }
+    } catch (err) {
+      console.error(`Erreur lors du ${action === "block" ? "blocage" : "déblocage"} :`, err);
+      alert(`Une erreur s'est produite lors du ${action === "block" ? "blocage" : "déblocage"} de l'utilisateur.`);
     }
   };
+
+  // Fonction pour filtrer les utilisateurs en fonction de leur statut de blocage
+  const filteredUsers = users.filter((user) => {
+    if (filter === "blocked") {
+      return user.is_blocked;
+    }
+    if (filter === "unblocked") {
+      return !user.is_blocked;
+    }
+    return true; // "all" -> aucun filtre
+  });
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       {validAdmin ? (
         <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-lg">
           <h1 className="text-2xl font-bold text-green-600 mb-4">
-            Vous êtes bien un admin, bravo !
+            Interface Administrateur
           </h1>
+
+          {/* Filtrage des utilisateurs */}
+          <div className="mb-4">
+            <label className="mr-2">Filtrer par statut :</label>
+            <input
+              type="radio"
+              id="all"
+              name="filter"
+              value="all"
+              checked={filter === "all"}
+              onChange={() => setFilter("all")}
+            />
+            <label htmlFor="all" className="mr-4">Tous</label>
+
+            <input
+              type="radio"
+              id="blocked"
+              name="filter"
+              value="blocked"
+              checked={filter === "blocked"}
+              onChange={() => setFilter("blocked")}
+            />
+            <label htmlFor="blocked" className="mr-4">Comptes bloqués</label>
+
+            <input
+              type="radio"
+              id="unblocked"
+              name="filter"
+              value="unblocked"
+              checked={filter === "unblocked"}
+              onChange={() => setFilter("unblocked")}
+            />
+            <label htmlFor="unblocked">Comptes non bloqués</label>
+          </div>
+
           {loading ? (
             <p className="text-gray-700">Chargement des utilisateurs...</p>
           ) : (
@@ -148,8 +194,8 @@ export default function Admin() {
                 Liste des utilisateurs :
               </h2>
               <ul className="space-y-2">
-                {users.length > 0 ? (
-                  users.map((user) => (
+                {filteredUsers.length > 0 ? (
+                  filteredUsers.map((user) => (
                     <li
                       key={user.uti_id}
                       className="bg-gray-50 p-2 rounded border border-gray-200 flex justify-between items-center"
@@ -158,7 +204,7 @@ export default function Admin() {
                         <span className="font-medium">{user.uti_email}</span>
                         <div className="text-gray-500 text-sm">
                           Rôle : {user.role || "Non défini"}
-                          {user.is_blocked && ( // Use correct property name
+                          {user.is_blocked && (
                             <span className="text-red-500"> (Bloqué)</span>
                           )}
                         </div>
@@ -171,10 +217,12 @@ export default function Admin() {
                           Supprimer
                         </button>
                         <button
-                          onClick={() => handleBlockUser(user.uti_id)}
-                          className="bg-yellow-500 text-white rounded px-2 py-1 text-xs"
+                          onClick={() => handleBlockUser(user.uti_id, user.is_blocked)} // Passer l'état du blocage
+                          className={`${
+                            user.is_blocked ? "bg-green-500" : "bg-yellow-500"
+                          } text-white rounded px-2 py-1 text-xs`}
                         >
-                          Bloquer
+                          {user.is_blocked ? "Débloquer" : "Bloquer"}
                         </button>
                       </div>
                     </li>

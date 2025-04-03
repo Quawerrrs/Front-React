@@ -195,6 +195,7 @@ export default function Createur() {
           </div>
 
           {/* Right Content: Rest of the page */}
+
           <div className="w-full p-4 pl-10 overflow-auto">
             <h2 className="text-gray-800 text-2xl font-bold">Mes Chaines :</h2>
             {/* Rest of your page content */}

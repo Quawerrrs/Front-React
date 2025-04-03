@@ -15,6 +15,7 @@ export default function PopupSendDemande({ productID, chaineID }) {
         "Content-Type": "application/json",
       },
       credentials: "include",
+
       body: JSON.stringify({
         msg: description,
         prix: prix,
@@ -85,6 +86,7 @@ export default function PopupSendDemande({ productID, chaineID }) {
               onChange={(e) => setPrix(Number(e.target.value))}
             />
           </div>
+
           <div>
             <label htmlFor="prix" className="mr-2 font-bold">
               Nombre de jours pour poster la vidéo
