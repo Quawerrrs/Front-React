@@ -8,7 +8,18 @@ export default function PopupCode({ validAdmin }) {
   const handleCodeChange = (e) => {
     setCode(e.target.value);
   };
-
+  // useEffect(() => {
+  //   fetch("http://localhost:5000/api/session/getSession", {
+  //     method: "GET",
+  //     credentials: "include",
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       if (!data.success){
+  //         navigate("/login")
+  //       }
+  //     });
+  // }, []);
   const valider = async () => {
     fetch("http://localhost:5000/api/session/getSession", {
       method: "GET",
