@@ -13,7 +13,7 @@ export default function MdpOublie() {
   };
 
   const ChangePsw = () => {
-    fetch("http://localhost:5000/api/resetPassword", {
+    fetch("http://10.0.0.183:5000/api/resetPassword", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

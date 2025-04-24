@@ -15,7 +15,7 @@ export default function Entreprise() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/session/getSession", {
+    fetch("http://10.0.0.183:5000/api/session/getSession", {
       method: "GET",
       credentials: "include",
     })
@@ -31,7 +31,7 @@ export default function Entreprise() {
 
     getMoreChannels();
 
-    fetch("http://localhost:5000/api/getDemandesEntreprise", {
+    fetch("http://10.0.0.183:5000/api/getDemandesEntreprise", {
       method: "GET",
       credentials: "include",
     })
@@ -43,7 +43,7 @@ export default function Entreprise() {
   }, []);
 
   const getMoreChannels = () => {
-    fetch("http://localhost:5000/api/getchannels", {
+    fetch("http://10.0.0.183:5000/api/getchannels", {
       method: "POST",
       credentials: "include",
       headers: { "Content-type": "application/json" },
@@ -68,7 +68,7 @@ export default function Entreprise() {
     handleSearch();
   }, [length]);
   const handleSearch = (e) => {
-    fetch("http://localhost:5000/api/getchannels", {
+    fetch("http://10.0.0.183:5000/api/getchannels", {
       method: "POST",
       credentials: "include",
       headers: { "Content-type": "application/json" },
@@ -130,7 +130,7 @@ export default function Entreprise() {
           subscribers = 0;
       }
     }
-    fetch("http://localhost:5000/api/getchannels", {
+    fetch("http://10.0.0.183:5000/api/getchannels", {
       method: "POST",
       credentials: "include",
       headers: { "Content-type": "application/json" },
@@ -153,7 +153,7 @@ export default function Entreprise() {
   };
   const deleteDemande = (id) => {
     if (confirm("Voulez-vous vraiment supprimer la demande ?")) {
-      fetch(`http://localhost:5000/api/deleteDemande/${id}`, {
+      fetch(`http://10.0.0.183:5000/api/deleteDemande/${id}`, {
         method: "DELETE",
         credentials: "include",
       })
@@ -161,7 +161,7 @@ export default function Entreprise() {
         .then((data) => {
           if (data.success) {
             alert("Demande supprimée");
-            fetch("http://localhost:5000/api/getDemandesEntreprise", {
+            fetch("http://10.0.0.183:5000/api/getDemandesEntreprise", {
               method: "GET",
               credentials: "include",
             })
@@ -328,7 +328,6 @@ export default function Entreprise() {
                     onChange={handleSubCategoryChange}
                     className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-800"
                   >
-
                     <option value="">0 ou plus</option>
                     <option value="1">plus de 1K</option>
                     <option value="2">plus de 10K</option>

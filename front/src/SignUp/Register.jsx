@@ -16,7 +16,7 @@ function Register() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/session/getSession", {
+    fetch("http://10.0.0.183:5000/api/session/getSession", {
       method: "GET",
       credentials: "include",
     })
@@ -73,7 +73,7 @@ function Register() {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/api/ajoutuser", {
+      const response = await fetch("http://10.0.0.183:5000/api/ajoutuser", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

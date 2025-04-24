@@ -4,7 +4,7 @@ import PopupSendDemande from "./PopupSendDemande";
 export default function PopupDemande({ chaine = null }) {
   const [products, setProducts] = React.useState([]);
   React.useEffect(() => {
-    fetch("http://localhost:5000/api/getProducts", {
+    fetch("http://10.0.0.183:5000/api/getProducts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

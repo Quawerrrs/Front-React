@@ -9,7 +9,7 @@ export default function PopupCode({ validAdmin }) {
     setCode(e.target.value);
   };
   // useEffect(() => {
-  //   fetch("http://localhost:5000/api/session/getSession", {
+  //   fetch("http://10.0.0.183:5000/api/session/getSession", {
   //     method: "GET",
   //     credentials: "include",
   //   })
@@ -21,7 +21,7 @@ export default function PopupCode({ validAdmin }) {
   //     });
   // }, []);
   const valider = async () => {
-    fetch("http://localhost:5000/api/session/getSession", {
+    fetch("http://10.0.0.183:5000/api/session/getSession", {
       method: "GET",
       credentials: "include",
     })
