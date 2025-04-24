@@ -9,7 +9,7 @@ export default function PopupSendDemande({ productID, chaineID }) {
     ).style.display = "none";
   };
   const sendDemande = () => {
-    fetch("http://localhost:5000/api/addDemande", {
+    fetch("http://10.0.0.183:5000/api/addDemande", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

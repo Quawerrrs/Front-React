@@ -20,7 +20,7 @@ export default function Profile() {
   const navigate = useNavigate();
   // Récupérer les informations de l'utilisateur depuis l'API
   useEffect(() => {
-    fetch("http://localhost:5000/api/session/getSession", {
+    fetch("http://10.0.0.183:5000/api/session/getSession", {
       method: "GET",
       credentials: "include",
     })
@@ -58,7 +58,7 @@ export default function Profile() {
   const saveModif = async () => {
     console.log("test");
     try {
-      const result = await fetch("http://localhost:5000/api/updateUser", {
+      const result = await fetch("http://10.0.0.183:5000/api/updateUser", {
         method: "PATCH",
         credentials: "include",
         headers: {
@@ -85,7 +85,7 @@ export default function Profile() {
   };
 
   const logout = () => {
-    fetch("http://localhost:5000/api/session/logout", {
+    fetch("http://10.0.0.183:5000/api/session/logout", {
       method: "GET",
       credentials: "include",
     })
@@ -100,7 +100,7 @@ export default function Profile() {
 
   const supprimer = () => {
     if (confirm("Voulez-vous supprimer votre compte ?")) {
-      fetch("http://localhost:5000/api/deleteUser", {
+      fetch("http://10.0.0.183:5000/api/deleteUser", {
         method: "POST",
         credentials: "include",
       })

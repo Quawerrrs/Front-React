@@ -14,7 +14,7 @@ export default function ChangeMdp() {
   };
 
   const ChangePsw = () => {
-    fetch("http://localhost:5000/api/changePassword", {
+    fetch("http://10.0.0.183:5000/api/changePassword", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

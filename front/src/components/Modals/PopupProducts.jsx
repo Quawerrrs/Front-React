@@ -4,7 +4,7 @@ import PopupAddProduct from "./PopupAddProduct";
 export default function PopupProducts({ show, setShowProducts, utiId }) {
   const [products, setProducts] = React.useState([]);
   React.useEffect(() => {
-    fetch("http://localhost:5000/api/getProducts", {
+    fetch("http://10.0.0.183:5000/api/getProducts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -16,7 +16,7 @@ export default function PopupProducts({ show, setShowProducts, utiId }) {
       .then((result) => setProducts(result.products));
   }, [show]);
   const deleteProduct = (id) => {
-    fetch(`http://localhost:5000/api/deleteProduct/${id}`, {
+    fetch(`http://10.0.0.183:5000/api/deleteProduct/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

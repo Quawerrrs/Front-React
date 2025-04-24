@@ -11,7 +11,7 @@ export default function Createur() {
   const [demandesChaines, setDemandesChaines] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/session/getSession", {
+    fetch("http://10.0.0.183:5000/api/session/getSession", {
       method: "GET",
       credentials: "include",
     })
@@ -24,7 +24,7 @@ export default function Createur() {
           setValidCreateur(false);
           navigate("/login");
         }
-        fetch("http://localhost:5000/api/getchannelsID", {
+        fetch("http://10.0.0.183:5000/api/getchannelsID", {
           method: "POST",
           credentials: "include",
           headers: { "Content-type": "application/json" },
@@ -35,7 +35,7 @@ export default function Createur() {
             setChaines(chaineID);
           });
       });
-    fetch("http://localhost:5000/api/getDemandesCreateur", {
+    fetch("http://10.0.0.183:5000/api/getDemandesCreateur", {
       method: "GET",
       credentials: "include",
     })
@@ -49,7 +49,7 @@ export default function Createur() {
   };
   const deleteChannel = (id) => {
     if (confirm("Voulez-vous supprimer cette chaine ?")) {
-      fetch("http://localhost:5000/api/deleteChannel", {
+      fetch("http://10.0.0.183:5000/api/deleteChannel", {
         method: "POST",
         credentials: "include",
         headers: { "Content-type": "application/json" },
@@ -66,7 +66,7 @@ export default function Createur() {
   };
   const refuserDemande = (id) => {
     if (confirm("Voulez-vous vraiment refuser la demande ?")) {
-      fetch(`http://localhost:5000/api/refuserDemande/${id}`, {
+      fetch(`http://10.0.0.183:5000/api/refuserDemande/${id}`, {
         method: "PUT",
         credentials: "include",
       })
@@ -82,7 +82,7 @@ export default function Createur() {
   };
   const validDemande = (id) => {
     if (confirm("Voulez-vous accepter ce placement de produit ?")) {
-      fetch(`http://localhost:5000/api/validDemande/${id}`, {
+      fetch(`http://10.0.0.183:5000/api/validDemande/${id}`, {
         method: "PUT",
         credentials: "include",
       })
@@ -101,7 +101,7 @@ export default function Createur() {
   };
   const annulerDemande = (id) => {
     if (confirm("Voulez-vous vraiment supprimer la demande ?")) {
-      fetch(`http://localhost:5000/api/deleteDemande/${id}`, {
+      fetch(`http://10.0.0.183:5000/api/deleteDemande/${id}`, {
         method: "DELETE",
         credentials: "include",
       })
