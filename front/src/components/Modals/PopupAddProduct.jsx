@@ -12,7 +12,7 @@ export default function PopupAddProduct({ setShowProducts, product }) {
     data.append("prix", prix);
     if (product.pro_id > 0) {
       data.append("id", product.pro_id);
-      fetch("http://localhost:5000/api/updateProduct", {
+      fetch("http://10.0.0.183:5000/api/updateProduct", {
         method: "PUT",
         credentials: "include",
         body: data,
@@ -30,7 +30,7 @@ export default function PopupAddProduct({ setShowProducts, product }) {
         alert("Veuillez choisir une image");
         return;
       }
-      fetch("http://localhost:5000/api/addProduct", {
+      fetch("http://10.0.0.183:5000/api/addProduct", {
         method: "POST",
         credentials: "include",
         body: data,

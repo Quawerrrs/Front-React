@@ -24,7 +24,7 @@ export default function PopupModifChannel({ chaine = null, setReload }) {
 
   const handleSubmit = () => {
     if (chaine == null) {
-      fetch("http://localhost:5000/api/addChannel", {
+      fetch("http://10.0.0.183:5000/api/addChannel", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -41,7 +41,7 @@ export default function PopupModifChannel({ chaine = null, setReload }) {
           }
         });
     } else {
-      fetch("http://localhost:5000/api/updateChannel", {
+      fetch("http://10.0.0.183:5000/api/updateChannel", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

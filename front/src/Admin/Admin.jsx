@@ -12,7 +12,7 @@ export default function Admin() {
 
   // Validation de l'admin avec le code de session
   useEffect(() => {
-    fetch("http://localhost:5000/api/session/getSession", {
+    fetch("http://10.0.0.183:5000/api/session/getSession", {
       method: "GET",
       credentials: "include",
     })
@@ -30,7 +30,7 @@ export default function Admin() {
   useEffect(() => {
     if (validAdmin) {
       setLoading(true);
-      fetch("http://localhost:5000/api/getUsers", {
+      fetch("http://10.0.0.183:5000/api/getUsers", {
         method: "GET",
         credentials: "include",
       })
@@ -53,10 +53,12 @@ export default function Admin() {
 
   // Fonction pour supprimer un utilisateur
   const handleDeleteUser = async (userId) => {
-    if (window.confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?")) {
+    if (
+      window.confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?")
+    ) {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/deleteSpecificUser/${userId}`,
+          `http://10.0.0.183:5000/api/deleteSpecificUser/${userId}`,
           {
             method: "DELETE",
             credentials: "include",
@@ -74,17 +76,14 @@ export default function Admin() {
         }
       } catch (err) {
         console.error("Erreur lors de la suppression :", err);
-        alert("Une erreur s'est produite lors de la suppression de l'utilisateur.");
+        alert(
+          "Une erreur s'est produite lors de la suppression de l'utilisateur."
+        );
       }
     }
   };
-  // Fonction pour bloquer ou débloquer un utilisateur
-  const handleBlockUser = async (userId, isBlocked) => {
-    const action = isBlocked ? "unblock" : "block"; // Si l'utilisateur est bloqué, on va le débloquer, sinon on le bloque
-    const reason = action === "block" ? window.prompt("Veuillez entrer la raison du blocage :") : null;
-    
   const Logout = () => {
-    fetch("http://localhost:5000/api/session/logout", {
+    fetch("http://10.0.0.183:5000/api/session/logout", {
       method: "GET",
       credentials: "include",
     })
@@ -93,7 +92,13 @@ export default function Admin() {
         navigate(response.redirect);
       });
   };
-
+  // Fonction pour bloquer ou débloquer un utilisateur
+  const handleBlockUser = async (userId, isBlocked) => {
+    const action = isBlocked ? "unblock" : "block"; // Si l'utilisateur est bloqué, on va le débloquer, sinon on le bloque
+    const reason =
+      action === "block"
+        ? window.prompt("Veuillez entrer la raison du blocage :")
+        : null;
 
     if (action === "block" && !reason) {
       alert("Raison de blocage annulée.");
@@ -102,7 +107,7 @@ export default function Admin() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/${action}User/${userId}`,
+        `http://10.0.0.183:5000/api/${action}User/${userId}`,
         {
           method: "POST",
           credentials: "include",
@@ -116,20 +121,37 @@ export default function Admin() {
       const data = await response.json();
 
       if (data.success) {
-        alert(`Utilisateur ${action === "block" ? "bloqué" : "débloqué"} avec succès !`);
+        alert(
+          `Utilisateur ${
+            action === "block" ? "bloqué" : "débloqué"
+          } avec succès !`
+        );
         // Mettre à jour l'état des utilisateurs ici
         setUsers((prevUsers) =>
           prevUsers.map(
             (user) =>
-              user.uti_id === userId ? { ...user, is_blocked: !isBlocked } : user // Inverse le statut de blocage
+              user.uti_id === userId
+                ? { ...user, is_blocked: !isBlocked }
+                : user // Inverse le statut de blocage
           )
         );
       } else {
-        alert(`Erreur lors du ${action === "block" ? "blocage" : "déblocage"} de l'utilisateur.`);
+        alert(
+          `Erreur lors du ${
+            action === "block" ? "blocage" : "déblocage"
+          } de l'utilisateur.`
+        );
       }
     } catch (err) {
-      console.error(`Erreur lors du ${action === "block" ? "blocage" : "déblocage"} :`, err);
-      alert(`Une erreur s'est produite lors du ${action === "block" ? "blocage" : "déblocage"} de l'utilisateur.`);
+      console.error(
+        `Erreur lors du ${action === "block" ? "blocage" : "déblocage"} :`,
+        err
+      );
+      alert(
+        `Une erreur s'est produite lors du ${
+          action === "block" ? "blocage" : "déblocage"
+        } de l'utilisateur.`
+      );
     }
   };
 
@@ -163,7 +185,9 @@ export default function Admin() {
               checked={filter === "all"}
               onChange={() => setFilter("all")}
             />
-            <label htmlFor="all" className="mr-4">Tous</label>
+            <label htmlFor="all" className="mr-4">
+              Tous
+            </label>
 
             <input
               type="radio"
@@ -173,7 +197,9 @@ export default function Admin() {
               checked={filter === "blocked"}
               onChange={() => setFilter("blocked")}
             />
-            <label htmlFor="blocked" className="mr-4">Comptes bloqués</label>
+            <label htmlFor="blocked" className="mr-4">
+              Comptes bloqués
+            </label>
 
             <input
               type="radio"
@@ -217,7 +243,9 @@ export default function Admin() {
                           Supprimer
                         </button>
                         <button
-                          onClick={() => handleBlockUser(user.uti_id, user.is_blocked)} // Passer l'état du blocage
+                          onClick={() =>
+                            handleBlockUser(user.uti_id, user.is_blocked)
+                          } // Passer l'état du blocage
                           className={`${
                             user.is_blocked ? "bg-green-500" : "bg-yellow-500"
                           } text-white rounded px-2 py-1 text-xs`}
